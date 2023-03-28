@@ -482,6 +482,10 @@ default-features = false
 path = "../../precompiles/utils"
 default-features = false
 
+[dependencies.pallet-evm-precompile-balances-erc20]
+ path = "../../precompiles/balances-erc20"
+ default-features = false
+
 [features]
 default = ["std", "aura"]
 aura = []
@@ -608,6 +612,7 @@ std = [
 	# Customized
 	"peaq-primitives-xcm/std",
 	"precompile-utils/std",
+	"pallet-evm-precompile-balances-erc20/std",
 ]
 
 # Must be enabled for tracing runtimes only
