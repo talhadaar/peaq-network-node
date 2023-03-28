@@ -57,7 +57,7 @@ pub type PeaqPrecompiles<R> = PrecompileSetBuilder<
 				// PrecompileAt<AddressU64<1025>, Dispatch<R>>,
 				PrecompileAt<AddressU64<1026>, ECRecoverPublicKey>,
 				// Moonbeam Specific precompiles
-				PrecompileAt<AddressU64<2050>, Erc20BalancesPrecompile<R, NativeErc20Metadata>>,
+				PrecompileAt<AddressU64<2048>, Erc20BalancesPrecompile<R, NativeErc20Metadata>>,
 			),
 		>,
 	),

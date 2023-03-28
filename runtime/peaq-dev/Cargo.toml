@@ -572,6 +572,7 @@ std = [
 	'pallet-evm-precompile-sha3fips/std',
 	'sp-std/std',
 	'fp-rpc/std',
+	"pallet-evm-precompile-balances-erc20/std",
 
 	# Tracing
 	'evm-tracing-events/std',
@@ -612,7 +613,6 @@ std = [
 	# Customized
 	"peaq-primitives-xcm/std",
 	"precompile-utils/std",
-	"pallet-evm-precompile-balances-erc20/std",
 ]
 
 # Must be enabled for tracing runtimes only

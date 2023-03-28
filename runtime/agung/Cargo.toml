@@ -309,6 +309,9 @@ default-features = false
 git = 'https://github.com/peaqnetwork/frontier'
 branch = 'peaq-polkadot-v0.9.29'
 
+[dependencies.pallet-evm-precompile-balances-erc20]
+path = "../../precompiles/balances-erc20"
+default-features = false
 
 # Tracing
 [dependencies.evm-tracing-events]
@@ -560,6 +563,7 @@ std = [
 	'pallet-evm-precompile-sha3fips/std',
 	'sp-std/std',
 	'fp-rpc/std',
+	"pallet-evm-precompile-balances-erc20/std",
 
 	# Tracing
 	'evm-tracing-events/std',
@@ -602,7 +606,7 @@ std = [
 	"precompile-utils/std",
 
 	"peaq-pallet-storage/std",
-	"peaq-pallet-storage-runtime-api/std"
+	"peaq-pallet-storage-runtime-api/std",
 ]
 
 # Must be enabled for tracing runtimes only
