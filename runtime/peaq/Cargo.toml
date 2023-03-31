@@ -480,6 +480,10 @@ default-features = false
 path = "../../precompiles/utils"
 default-features = false
 
+[dependencies.runtime-common]
+path = "../common"
+default-features = false
+
 
 [features]
 default = ["std", "aura"]
@@ -605,6 +609,7 @@ std = [
 	# Customized
 	"peaq-primitives-xcm/std",
 	"precompile-utils/std",
+	"runtime-common/std",
 ]
 
 # Must be enabled for tracing runtimes only
