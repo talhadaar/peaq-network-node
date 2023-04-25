@@ -40,8 +40,8 @@ use sp_std::{
 };
 
 // TODO revisit later
-// mod eip2612;
-// use eip2612::Eip2612;
+mod eip2612;
+use eip2612::Eip2612;
 
 // #[cfg(test)]
 // mod mock;
@@ -452,33 +452,33 @@ where
 		Ok(())
 	}
 
-	// #[precompile::public("permit(address,address,uint256,uint256,uint8,bytes32,bytes32)")]
-	// fn eip2612_permit(
-	// 	handle: &mut impl PrecompileHandle,
-	// 	owner: Address,
-	// 	spender: Address,
-	// 	value: U256,
-	// 	deadline: U256,
-	// 	v: u8,
-	// 	r: H256,
-	// 	s: H256,
-	// ) -> EvmResult {
-	// 	<Eip2612<Runtime, Metadata, Instance>>::permit(
-	// 		handle, owner, spender, value, deadline, v, r, s,
-	// 	)
-	// }
+	#[precompile::public("permit(address,address,uint256,uint256,uint8,bytes32,bytes32)")]
+	fn eip2612_permit(
+		handle: &mut impl PrecompileHandle,
+		owner: Address,
+		spender: Address,
+		value: U256,
+		deadline: U256,
+		v: u8,
+		r: H256,
+		s: H256,
+	) -> EvmResult {
+		<Eip2612<Runtime, Metadata, Instance>>::permit(
+			handle, owner, spender, value, deadline, v, r, s,
+		)
+	}
 
-	// #[precompile::public("nonces(address)")]
-	// #[precompile::view]
-	// fn eip2612_nonces(handle: &mut impl PrecompileHandle, owner: Address) -> EvmResult<U256> {
-	// 	<Eip2612<Runtime, Metadata, Instance>>::nonces(handle, owner)
-	// }
+	#[precompile::public("nonces(address)")]
+	#[precompile::view]
+	fn eip2612_nonces(handle: &mut impl PrecompileHandle, owner: Address) -> EvmResult<U256> {
+		<Eip2612<Runtime, Metadata, Instance>>::nonces(handle, owner)
+	}
 
-	// #[precompile::public("DOMAIN_SEPARATOR()")]
-	// #[precompile::view]
-	// fn eip2612_domain_separator(handle: &mut impl PrecompileHandle) -> EvmResult<H256> {
-	// 	<Eip2612<Runtime, Metadata, Instance>>::domain_separator(handle)
-	// }
+	#[precompile::public("DOMAIN_SEPARATOR()")]
+	#[precompile::view]
+	fn eip2612_domain_separator(handle: &mut impl PrecompileHandle) -> EvmResult<H256> {
+		<Eip2612<Runtime, Metadata, Instance>>::domain_separator(handle)
+	}
 
 	fn u256_to_amount(value: U256) -> MayRevert<BalanceOf<Runtime, Instance>> {
 		value
