@@ -5,6 +5,7 @@ on:
       - 'parachain_dev'
     tags:
       - 'v*'
+      - 'peaq-dev-v*'
 jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
@@ -32,6 +33,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
+          file: scripts/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
