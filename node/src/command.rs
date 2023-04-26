@@ -229,6 +229,29 @@ fn extract_genesis_wasm(chain_spec: &Box<dyn sc_service::ChainSpec>) -> Result<V
 		.ok_or_else(|| "Could not find wasm file in genesis state!".into())
 }
 
+macro_rules! with_runtime {
+	($chain_spec:expr, { $( $code:tt )* }) => {
+		if $chain_spec.is_agung() {
+			#[allow(unused_imports)]
+			use service::{agung::Executor};
+			$( $code )*
+		} else if $chain_spec.is_krest() {
+			#[allow(unused_imports)]
+			use service::{krest::Executor};
+			$( $code )*
+
+		} else if $chain_spec.is_peaq() {
+			#[allow(unused_imports)]
+			use service::{peaq::Executor};
+			$( $code )*
+		} else {
+			#[allow(unused_imports)]
+			use service::{dev::Executor};
+			$( $code )*
+		}
+	}
+}
+
 /// Parse and run command line arguments
 pub fn run() -> sc_cli::Result<()> {
 	let cli = Cli::from_args();
@@ -426,6 +449,26 @@ pub fn run() -> sc_cli::Result<()> {
 			}
 
 			Ok(())
+		},
+		Some(Subcommand::TryRuntime(cmd)) => {
+			let runner = cli.create_runner(cmd)?;
+			let chain_spec = &runner.config().chain_spec;
+
+			with_runtime!(chain_spec, {
+				if cfg!(feature = "try-runtime") {
+					// grab the task manager.
+					let registry = &runner.config().prometheus_config.as_ref().map(|cfg| &cfg.registry);
+					let task_manager =
+						sc_service::TaskManager::new(runner.config().tokio_handle.clone(), *registry)
+							.map_err(|e| format!("Error: {:?}", e))?;
+
+					runner.async_run(|config| {
+						Ok((cmd.run::<Block, Executor>(config), task_manager))
+					})
+				} else {
+					Err("Try-runtime must be enabled by `--features try-runtime`.".into())
+				}
+			})
 		},
 		None => {
 			let runner = cli.create_runner(&cli.run.normalize())?;

@@ -7548,6 +7548,7 @@ dependencies = [
  "substrate-frame-rpc-system",
  "substrate-prometheus-endpoint",
  "tokio",
+ "try-runtime-cli",
  "url 2.3.1",
  "xcm",
 ]

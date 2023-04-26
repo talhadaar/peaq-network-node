@@ -405,6 +405,10 @@ branch = 'dev'
 default-features = false
 version = '0.0.1'
 
+[dependencies.try-runtime-cli]
+git = "https://github.com/peaqnetwork/substrate"
+branch = "peaq-polkadot-v0.9.29"
+
 [features]
 default = [
 	"aura",
@@ -420,4 +424,10 @@ runtime-benchmarks = [
 	"peaq-krest-runtime/runtime-benchmarks",
 	"peaq-dev-runtime/runtime-benchmarks",
 	"polkadot-cli/runtime-benchmarks"
+]
+
+try-runtime = [
+	"peaq-agung-runtime/try-runtime",
+	"peaq-krest-runtime/try-runtime",
+	"peaq-dev-runtime/try-runtime"
 ]
