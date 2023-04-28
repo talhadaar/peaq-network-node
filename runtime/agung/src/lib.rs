@@ -92,20 +92,6 @@ use cumulus_pallet_parachain_system::RelayNumberStrictlyIncreases;
 pub use peaq_primitives_xcm::{currency, Amount, CurrencyId, TokenSymbol};
 use peaq_rpc_primitives_txpool::TxPoolResponse;
 
-pub use peaq_pallet_did;
-use peaq_pallet_did::{did::Did, structs::Attribute as DidAttribute};
-pub use peaq_pallet_rbac;
-use peaq_pallet_rbac::{
-	rbac::{Group, Permission, Rbac, Result as RbacResult, Role},
-	structs::{
-		Entity as RbacEntity, Permission2Role as RbacPermission2Role, Role2Group as RbacRole2Group,
-		Role2User as RbacRole2User, User2Group as RbacUser2Group,
-	},
-};
-pub use peaq_pallet_storage;
-use peaq_pallet_storage::traits::Storage;
-pub use peaq_pallet_transaction;
-
 // For XCM
 pub mod xcm_config;
 use orml_currencies::BasicCurrencyAdapter;
@@ -526,13 +512,6 @@ impl pallet_sudo::Config for Runtime {
 	type Call = Call;
 }
 
-/// Config the did in pallets/did
-impl peaq_pallet_did::Config for Runtime {
-	type Event = Event;
-	type Time = pallet_timestamp::Pallet<Runtime>;
-	type WeightInfo = peaq_pallet_did::weights::SubstrateWeight<Runtime>;
-}
-
 // Config the utility in pallets/utility
 impl pallet_utility::Config for Runtime {
 	type Call = Call;
@@ -938,18 +917,6 @@ impl orml_unknown_tokens::Config for Runtime {
 	type Event = Event;
 }
 
-impl peaq_pallet_rbac::Config for Runtime {
-	type Event = Event;
-	type EntityId = EntityId;
-	type WeightInfo = peaq_pallet_rbac::weights::SubstrateWeight<Runtime>;
-}
-
-// Config the storage in pallets/storage
-impl peaq_pallet_storage::Config for Runtime {
-	type Event = Event;
-	type WeightInfo = peaq_pallet_storage::weights::SubstrateWeight<Runtime>;
-}
-
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub enum Runtime where
@@ -999,11 +966,7 @@ construct_runtime!(
 		Vesting: pallet_vesting = 50,
 
 		// Include the custom pallets
-		PeaqDid: peaq_pallet_did::{Pallet, Call, Storage, Event<T>} = 100,
-		Transaction: peaq_pallet_transaction::{Pallet, Call, Storage, Event<T>} = 101,
 		MultiSig:  pallet_multisig::{Pallet, Call, Storage, Event<T>} = 102,
-		PeaqRbac: peaq_pallet_rbac::{Pallet, Call, Storage, Event<T>} = 103,
-		PeaqStorage: peaq_pallet_storage::{Pallet, Call, Storage, Event<T>} = 104,
 	}
 );
 
@@ -1040,6 +1003,7 @@ pub type Executive = frame_executive::Executive<
 	frame_system::ChainContext<Runtime>,
 	Runtime,
 	AllPalletsWithSystem,
+	(),
 >;
 
 impl fp_self_contained::SelfContainedCall for Call {
@@ -1512,96 +1476,6 @@ impl_runtime_apis! {
 		}
 	}
 
-	impl peaq_pallet_did_runtime_api::PeaqDIDApi<Block, AccountId, BlockNumber, Moment> for Runtime {
-		fn read(did_account: AccountId, name: Vec<u8>) -> Option<
-			DidAttribute<BlockNumber, Moment>> {
-			PeaqDid::read(&did_account, &name)
-		}
-	}
-
-	impl peaq_pallet_rbac_runtime_api::PeaqRBACRuntimeApi<Block, AccountId, EntityId> for Runtime {
-		fn fetch_role(
-			account: AccountId,
-			entity: EntityId
-		) -> RbacResult<RbacEntity<EntityId>> {
-			PeaqRbac::get_role(&account, entity)
-		}
-
-		fn fetch_roles(
-			owner: AccountId
-		) -> RbacResult<Vec<RbacEntity<EntityId>>> {
-			PeaqRbac::get_roles(&owner)
-		}
-
-		fn fetch_user_roles(
-			owner: AccountId,
-			user_id: EntityId
-		) -> RbacResult<Vec<RbacRole2User<EntityId>>> {
-			PeaqRbac::get_user_roles(&owner, user_id)
-		}
-
-		fn fetch_permission(
-			owner: AccountId,
-			permission_id: EntityId
-		) -> RbacResult<RbacEntity<EntityId>> {
-			PeaqRbac::get_permission(&owner, permission_id)
-		}
-
-		fn fetch_permissions(
-			owner: AccountId
-		) -> RbacResult<Vec<RbacEntity<EntityId>>> {
-			PeaqRbac::get_permissions(&owner)
-		}
-
-		fn fetch_role_permissions(
-			owner: AccountId,
-			role_id: EntityId
-		) -> RbacResult<Vec<RbacPermission2Role<EntityId>>> {
-			PeaqRbac::get_role_permissions(&owner, role_id)
-		}
-
-		fn fetch_group(
-			owner: AccountId,
-			group_id: EntityId
-		) -> RbacResult<RbacEntity<EntityId>> {
-			PeaqRbac::get_group(&owner, group_id)
-		}
-
-		fn fetch_groups(
-			owner: AccountId
-		) -> RbacResult<Vec<RbacEntity<EntityId>>> {
-			PeaqRbac::get_groups(&owner)
-		}
-
-		fn fetch_group_roles(
-			owner: AccountId,
-			group_id: EntityId
-		) -> RbacResult<Vec<RbacRole2Group<EntityId>>> {
-			PeaqRbac::get_group_roles(&owner, group_id)
-		}
-
-		fn fetch_user_groups(
-			owner: AccountId,
-			user_id: EntityId
-		) -> RbacResult<Vec<RbacUser2Group<EntityId>>> {
-			PeaqRbac::get_user_groups(&owner, user_id)
-		}
-
-		fn fetch_user_permissions(
-			owner: AccountId,
-			user_id: EntityId
-		) -> RbacResult<Vec<RbacEntity<EntityId>>> {
-			PeaqRbac::get_user_permissions(&owner, user_id)
-		}
-
-		fn fetch_group_permissions(
-			owner: AccountId,
-			group_id: EntityId
-		) -> RbacResult<Vec<RbacEntity<EntityId>>> {
-			PeaqRbac::get_group_permissions(&owner, group_id)
-		}
-	}
-
 	impl sp_session::SessionKeys<Block> for Runtime {
 		fn generate_session_keys(seed: Option<Vec<u8>>) -> Vec<u8> {
 			opaque::SessionKeys::generate(seed)
@@ -1668,12 +1542,6 @@ impl_runtime_apis! {
 		}
 	}
 
-	impl peaq_pallet_storage_runtime_api::PeaqStorageApi<Block, AccountId> for Runtime{
-		fn read(did_account: AccountId, item_type: Vec<u8>) -> Option<Vec<u8>>{
-			PeaqStorage::read(&did_account, &item_type)
-		}
-	}
-
 	#[cfg(feature = "try-runtime")]
 	impl frame_try_runtime::TryRuntime<Block> for Runtime {
 		fn on_runtime_upgrade() -> (Weight, Weight) {
@@ -1715,10 +1583,6 @@ impl_runtime_apis! {
 
 			list_benchmark!(list, extra, parachain_staking, ParachainStaking);
 			list_benchmark!(list, extra, pallet_block_reward, BlockReward);
-			list_benchmark!(list, extra, peaq_pallet_transaction, Transaction);
-			list_benchmark!(list, extra, peaq_pallet_did, PeaqDid);
-			list_benchmark!(list, extra, peaq_pallet_rbac, PeaqRbac);
-			list_benchmark!(list, extra, peaq_pallet_storage, PeaqStorage);
 
 			let storage_info = AllPalletsWithSystem::storage_info();
 
@@ -1757,21 +1621,11 @@ impl_runtime_apis! {
 
 			add_benchmark!(params, batches, parachain_staking, ParachainStaking);
 			add_benchmark!(params, batches, pallet_block_reward, BlockReward);
-			add_benchmark!(params, batches, peaq_pallet_transaction, Transaction);
-			add_benchmark!(params, batches, peaq_pallet_did, PeaqDid);
-			add_benchmark!(params, batches, peaq_pallet_rbac, PeaqRbac);
-			add_benchmark!(params, batches, peaq_pallet_storage, PeaqStorage);
 
 			if batches.is_empty() { return Err("Benchmark not found for this pallet.".into()) }
 			Ok(batches)
 		}
 	}
-}
-
-impl peaq_pallet_transaction::Config for Runtime {
-	type Event = Event;
-	type Currency = Balances;
-	type WeightInfo = peaq_pallet_transaction::weights::SubstrateWeight<Runtime>;
 }
 
 parameter_types! {
