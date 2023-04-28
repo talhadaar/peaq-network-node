@@ -92,6 +92,12 @@ use cumulus_pallet_parachain_system::RelayNumberStrictlyIncreases;
 pub use peaq_primitives_xcm::{currency, Amount, CurrencyId, TokenSymbol};
 use peaq_rpc_primitives_txpool::TxPoolResponse;
 
+pub use peaq_pallet_did;
+use peaq_pallet_did::{did::Did, structs::Attribute as DidAttribute};
+pub use peaq_pallet_storage;
+use peaq_pallet_storage::traits::Storage;
+pub use peaq_pallet_transaction;
+
 // For XCM
 pub mod xcm_config;
 use orml_currencies::BasicCurrencyAdapter;
@@ -512,6 +518,13 @@ impl pallet_sudo::Config for Runtime {
 	type Call = Call;
 }
 
+/// Config the did in pallets/did
+impl peaq_pallet_did::Config for Runtime {
+	type Event = Event;
+	type Time = pallet_timestamp::Pallet<Runtime>;
+	type WeightInfo = peaq_pallet_did::weights::SubstrateWeight<Runtime>;
+}
+
 // Config the utility in pallets/utility
 impl pallet_utility::Config for Runtime {
 	type Call = Call;
@@ -917,6 +930,13 @@ impl orml_unknown_tokens::Config for Runtime {
 	type Event = Event;
 }
 
+// Config the storage in pallets/storage
+impl peaq_pallet_storage::Config for Runtime {
+	type Event = Event;
+	type WeightInfo = peaq_pallet_storage::weights::SubstrateWeight<Runtime>;
+}
+
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub enum Runtime where
@@ -966,7 +986,10 @@ construct_runtime!(
 		Vesting: pallet_vesting = 50,
 
 		// Include the custom pallets
+		PeaqDid: peaq_pallet_did::{Pallet, Call, Storage, Event<T>} = 100,
+		Transaction: peaq_pallet_transaction::{Pallet, Call, Storage, Event<T>} = 101,
 		MultiSig:  pallet_multisig::{Pallet, Call, Storage, Event<T>} = 102,
+		PeaqStorage: peaq_pallet_storage::{Pallet, Call, Storage, Event<T>} = 104,
 	}
 );
 
@@ -1476,6 +1499,14 @@ impl_runtime_apis! {
 		}
 	}
 
+	impl peaq_pallet_did_runtime_api::PeaqDIDApi<Block, AccountId, BlockNumber, Moment> for Runtime {
+		fn read(did_account: AccountId, name: Vec<u8>) -> Option<
+			DidAttribute<BlockNumber, Moment>> {
+			PeaqDid::read(&did_account, &name)
+		}
+	}
+
+
 	impl sp_session::SessionKeys<Block> for Runtime {
 		fn generate_session_keys(seed: Option<Vec<u8>>) -> Vec<u8> {
 			opaque::SessionKeys::generate(seed)
@@ -1542,6 +1573,12 @@ impl_runtime_apis! {
 		}
 	}
 
+	impl peaq_pallet_storage_runtime_api::PeaqStorageApi<Block, AccountId> for Runtime{
+		fn read(did_account: AccountId, item_type: Vec<u8>) -> Option<Vec<u8>>{
+			PeaqStorage::read(&did_account, &item_type)
+		}
+	}
+
 	#[cfg(feature = "try-runtime")]
 	impl frame_try_runtime::TryRuntime<Block> for Runtime {
 		fn on_runtime_upgrade() -> (Weight, Weight) {
@@ -1583,6 +1620,10 @@ impl_runtime_apis! {
 
 			list_benchmark!(list, extra, parachain_staking, ParachainStaking);
 			list_benchmark!(list, extra, pallet_block_reward, BlockReward);
+			list_benchmark!(list, extra, peaq_pallet_transaction, Transaction);
+			list_benchmark!(list, extra, peaq_pallet_did, PeaqDid);
+			list_benchmark!(list, extra, peaq_pallet_storage, PeaqStorage);
+
 
 			let storage_info = AllPalletsWithSystem::storage_info();
 
@@ -1621,11 +1662,22 @@ impl_runtime_apis! {
 
 			add_benchmark!(params, batches, parachain_staking, ParachainStaking);
 			add_benchmark!(params, batches, pallet_block_reward, BlockReward);
+			add_benchmark!(params, batches, peaq_pallet_transaction, Transaction);
+			add_benchmark!(params, batches, peaq_pallet_did, PeaqDid);
+			add_benchmark!(params, batches, peaq_pallet_storage, PeaqStorage);
+
+
 
 			if batches.is_empty() { return Err("Benchmark not found for this pallet.".into()) }
 			Ok(batches)
 		}
 	}
+}
+
+impl peaq_pallet_transaction::Config for Runtime {
+	type Event = Event;
+	type Currency = Balances;
+	type WeightInfo = peaq_pallet_transaction::weights::SubstrateWeight<Runtime>;
 }
 
 parameter_types! {
