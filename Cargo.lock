@@ -2755,7 +2755,7 @@ dependencies = [
 [[package]]
 name = "fp-consensus"
 version = "2.0.0-dev"
-source = "git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29#519c465097c3c2b587df8927987be5ef39a343b6"
+source = "git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29#8328e67035a1da53f57dff9f7046ffef7239cf20"
 dependencies = [
  "ethereum",
  "parity-scale-codec",
@@ -2777,7 +2777,7 @@ dependencies = [
 [[package]]
 name = "fp-dynamic-fee"
 version = "1.0.0"
-source = "git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29#519c465097c3c2b587df8927987be5ef39a343b6"
+source = "git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29#8328e67035a1da53f57dff9f7046ffef7239cf20"
 dependencies = [
  "async-trait",
  "sp-core",
@@ -2802,11 +2802,11 @@ dependencies = [
 [[package]]
 name = "fp-ethereum"
 version = "1.0.0-dev"
-source = "git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29#519c465097c3c2b587df8927987be5ef39a343b6"
+source = "git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29#8328e67035a1da53f57dff9f7046ffef7239cf20"
 dependencies = [
  "ethereum",
  "ethereum-types",
- "fp-evm 3.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
+ "fp-evm 3.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
  "frame-support",
  "num_enum",
  "parity-scale-codec",
@@ -2830,7 +2830,7 @@ dependencies = [
 [[package]]
 name = "fp-evm"
 version = "3.0.0-dev"
-source = "git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29#519c465097c3c2b587df8927987be5ef39a343b6"
+source = "git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29#8328e67035a1da53f57dff9f7046ffef7239cf20"
 dependencies = [
  "evm",
  "frame-support",
@@ -2860,11 +2860,11 @@ dependencies = [
 [[package]]
 name = "fp-rpc"
 version = "3.0.0-dev"
-source = "git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29#519c465097c3c2b587df8927987be5ef39a343b6"
+source = "git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29#8328e67035a1da53f57dff9f7046ffef7239cf20"
 dependencies = [
  "ethereum",
  "ethereum-types",
- "fp-evm 3.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
+ "fp-evm 3.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
  "parity-scale-codec",
  "scale-info",
  "sp-api",
@@ -2891,7 +2891,7 @@ dependencies = [
 [[package]]
 name = "fp-self-contained"
 version = "1.0.0-dev"
-source = "git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29#519c465097c3c2b587df8927987be5ef39a343b6"
+source = "git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29#8328e67035a1da53f57dff9f7046ffef7239cf20"
 dependencies = [
  "ethereum",
  "frame-support",
@@ -2914,7 +2914,7 @@ dependencies = [
 [[package]]
 name = "fp-storage"
 version = "2.0.0"
-source = "git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29#519c465097c3c2b587df8927987be5ef39a343b6"
+source = "git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29#8328e67035a1da53f57dff9f7046ffef7239cf20"
 dependencies = [
  "parity-scale-codec",
  "serde",
@@ -6010,9 +6010,9 @@ dependencies = [
 [[package]]
 name = "pallet-base-fee"
 version = "1.0.0"
-source = "git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29#519c465097c3c2b587df8927987be5ef39a343b6"
+source = "git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29#8328e67035a1da53f57dff9f7046ffef7239cf20"
 dependencies = [
- "fp-evm 3.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
+ "fp-evm 3.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
  "frame-support",
  "frame-system",
  "parity-scale-codec",
@@ -6254,11 +6254,11 @@ dependencies = [
 [[package]]
 name = "pallet-dynamic-fee"
 version = "4.0.0-dev"
-source = "git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29#519c465097c3c2b587df8927987be5ef39a343b6"
+source = "git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29#8328e67035a1da53f57dff9f7046ffef7239cf20"
 dependencies = [
  "async-trait",
- "fp-dynamic-fee 1.0.0 (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
- "fp-evm 3.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
+ "fp-dynamic-fee 1.0.0 (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
+ "fp-evm 3.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
  "frame-support",
  "frame-system",
  "parity-scale-codec",
@@ -6354,20 +6354,20 @@ dependencies = [
 [[package]]
 name = "pallet-ethereum"
 version = "4.0.0-dev"
-source = "git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29#519c465097c3c2b587df8927987be5ef39a343b6"
+source = "git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29#8328e67035a1da53f57dff9f7046ffef7239cf20"
 dependencies = [
  "ethereum",
  "ethereum-types",
  "evm",
- "fp-consensus 2.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
- "fp-ethereum 1.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
- "fp-evm 3.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
- "fp-rpc 3.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
- "fp-self-contained 1.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
- "fp-storage 2.0.0 (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
+ "fp-consensus 2.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
+ "fp-ethereum 1.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
+ "fp-evm 3.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
+ "fp-rpc 3.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
+ "fp-self-contained 1.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
+ "fp-storage 2.0.0 (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
  "frame-support",
  "frame-system",
- "pallet-evm 6.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
+ "pallet-evm 6.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
  "pallet-timestamp",
  "parity-scale-codec",
  "rlp",
@@ -6406,11 +6406,11 @@ dependencies = [
 [[package]]
 name = "pallet-evm"
 version = "6.0.0-dev"
-source = "git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29#519c465097c3c2b587df8927987be5ef39a343b6"
+source = "git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29#8328e67035a1da53f57dff9f7046ffef7239cf20"
 dependencies = [
  "environmental",
  "evm",
- "fp-evm 3.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
+ "fp-evm 3.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
  "frame-benchmarking",
  "frame-support",
  "frame-system",
@@ -6439,9 +6439,9 @@ dependencies = [
 [[package]]
 name = "pallet-evm-precompile-blake2"
 version = "2.0.0-dev"
-source = "git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29#519c465097c3c2b587df8927987be5ef39a343b6"
+source = "git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29#8328e67035a1da53f57dff9f7046ffef7239cf20"
 dependencies = [
- "fp-evm 3.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
+ "fp-evm 3.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
 ]
 
 [[package]]
@@ -6457,9 +6457,9 @@ dependencies = [
 [[package]]
 name = "pallet-evm-precompile-bn128"
 version = "2.0.0-dev"
-source = "git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29#519c465097c3c2b587df8927987be5ef39a343b6"
+source = "git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29#8328e67035a1da53f57dff9f7046ffef7239cf20"
 dependencies = [
- "fp-evm 3.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
+ "fp-evm 3.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
  "sp-core",
  "substrate-bn",
 ]
@@ -6477,11 +6477,11 @@ dependencies = [
 [[package]]
 name = "pallet-evm-precompile-dispatch"
 version = "2.0.0-dev"
-source = "git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29#519c465097c3c2b587df8927987be5ef39a343b6"
+source = "git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29#8328e67035a1da53f57dff9f7046ffef7239cf20"
 dependencies = [
- "fp-evm 3.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
+ "fp-evm 3.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
  "frame-support",
- "pallet-evm 6.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
+ "pallet-evm 6.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
 ]
 
 [[package]]
@@ -6496,9 +6496,9 @@ dependencies = [
 [[package]]
 name = "pallet-evm-precompile-modexp"
 version = "2.0.0-dev"
-source = "git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29#519c465097c3c2b587df8927987be5ef39a343b6"
+source = "git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29#8328e67035a1da53f57dff9f7046ffef7239cf20"
 dependencies = [
- "fp-evm 3.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
+ "fp-evm 3.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
  "num",
 ]
 
@@ -6514,9 +6514,9 @@ dependencies = [
 [[package]]
 name = "pallet-evm-precompile-sha3fips"
 version = "2.0.0-dev"
-source = "git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29#519c465097c3c2b587df8927987be5ef39a343b6"
+source = "git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29#8328e67035a1da53f57dff9f7046ffef7239cf20"
 dependencies = [
- "fp-evm 3.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
+ "fp-evm 3.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
  "tiny-keccak",
 ]
 
@@ -6533,9 +6533,9 @@ dependencies = [
 [[package]]
 name = "pallet-evm-precompile-simple"
 version = "2.0.0-dev"
-source = "git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29#519c465097c3c2b587df8927987be5ef39a343b6"
+source = "git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29#8328e67035a1da53f57dff9f7046ffef7239cf20"
 dependencies = [
- "fp-evm 3.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
+ "fp-evm 3.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
  "ripemd",
  "sp-io",
 ]
@@ -7353,9 +7353,9 @@ dependencies = [
  "cumulus-primitives-timestamp",
  "cumulus-primitives-utility",
  "evm-tracing-events",
- "fp-evm 3.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
- "fp-rpc 3.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
- "fp-self-contained 1.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
+ "fp-evm 3.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
+ "fp-rpc 3.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
+ "fp-self-contained 1.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
  "frame-benchmarking",
  "frame-executive",
  "frame-support",
@@ -7374,21 +7374,21 @@ dependencies = [
  "pallet-aura",
  "pallet-authorship",
  "pallet-balances",
- "pallet-base-fee 1.0.0 (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
+ "pallet-base-fee 1.0.0 (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
  "pallet-block-reward",
  "pallet-collective",
  "pallet-contracts",
  "pallet-contracts-primitives",
  "pallet-contracts-rpc-runtime-api",
- "pallet-dynamic-fee 4.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
- "pallet-ethereum 4.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
- "pallet-evm 6.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
- "pallet-evm-precompile-blake2 2.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
- "pallet-evm-precompile-bn128 2.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
- "pallet-evm-precompile-dispatch 2.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
- "pallet-evm-precompile-modexp 2.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
- "pallet-evm-precompile-sha3fips 2.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
- "pallet-evm-precompile-simple 2.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
+ "pallet-dynamic-fee 4.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
+ "pallet-ethereum 4.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
+ "pallet-evm 6.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
+ "pallet-evm-precompile-blake2 2.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
+ "pallet-evm-precompile-bn128 2.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
+ "pallet-evm-precompile-dispatch 2.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
+ "pallet-evm-precompile-modexp 2.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
+ "pallet-evm-precompile-sha3fips 2.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
+ "pallet-evm-precompile-simple 2.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
  "pallet-multisig",
  "pallet-randomness-collective-flip",
  "pallet-session",
@@ -9557,7 +9557,7 @@ version = "0.1.0"
 dependencies = [
  "affix",
  "evm",
- "fp-evm 3.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
+ "fp-evm 3.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
  "frame-support",
  "frame-system",
  "hex",
@@ -9565,7 +9565,7 @@ dependencies = [
  "impl-trait-for-tuples",
  "log",
  "num_enum",
- "pallet-evm 6.0.0-dev (git+https://github.com/sfffaaa/frontier?branch=peaq-polkadot-v0.9.29)",
+ "pallet-evm 6.0.0-dev (git+https://github.com/talhadaar/frontier?branch=peaq-polkadot-v0.9.29)",
  "parity-scale-codec",
  "paste",
  "precompile-utils-macro",
