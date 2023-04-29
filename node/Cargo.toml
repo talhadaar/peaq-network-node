@@ -190,56 +190,56 @@ version = '0.3.3'
 
 # EVM
 [dependencies.fc-consensus]
-git = "https://github.com/peaqnetwork/frontier"
+git = "https://github.com/talhadaar/frontier"
 branch = 'peaq-polkadot-v0.9.29'
 
 [dependencies.fc-db]
-git = "https://github.com/peaqnetwork/frontier"
+git = "https://github.com/talhadaar/frontier"
 branch = 'peaq-polkadot-v0.9.29'
 
 [dependencies.fc-mapping-sync]
-git = "https://github.com/peaqnetwork/frontier"
+git = "https://github.com/talhadaar/frontier"
 branch = 'peaq-polkadot-v0.9.29'
 
 [dependencies.fc-rpc]
-git = "https://github.com/peaqnetwork/frontier"
+git = "https://github.com/talhadaar/frontier"
 branch = 'peaq-polkadot-v0.9.29'
 features = [ "rpc_binary_search_estimate" ]
 
 [dependencies.fc-rpc-core]
-git = "https://github.com/peaqnetwork/frontier"
+git = "https://github.com/talhadaar/frontier"
 branch = 'peaq-polkadot-v0.9.29'
 
 [dependencies.fp-consensus]
-git = "https://github.com/peaqnetwork/frontier"
+git = "https://github.com/talhadaar/frontier"
 branch = 'peaq-polkadot-v0.9.29'
 
 [dependencies.fp-storage]
-git = "https://github.com/peaqnetwork/frontier"
+git = "https://github.com/talhadaar/frontier"
 branch = 'peaq-polkadot-v0.9.29'
 
 [dependencies.fp-rpc]
-git = "https://github.com/peaqnetwork/frontier"
+git = "https://github.com/talhadaar/frontier"
 branch = 'peaq-polkadot-v0.9.29'
 
 [dependencies.pallet-base-fee]
 default-features = false
-git = 'https://github.com/peaqnetwork/frontier'
+git = 'https://github.com/talhadaar/frontier'
 branch = 'peaq-polkadot-v0.9.29'
 
 [dependencies.pallet-dynamic-fee]
 default-features = false
-git = 'https://github.com/peaqnetwork/frontier'
+git = 'https://github.com/talhadaar/frontier'
 branch = 'peaq-polkadot-v0.9.29'
 
 [dependencies.pallet-ethereum]
 default-features = false
-git = 'https://github.com/peaqnetwork/frontier'
+git = 'https://github.com/talhadaar/frontier'
 branch = 'peaq-polkadot-v0.9.29'
 
 [dependencies.pallet-evm]
 default-features = false
-git = 'https://github.com/peaqnetwork/frontier'
+git = 'https://github.com/talhadaar/frontier'
 branch = 'peaq-polkadot-v0.9.29'
 
 
@@ -363,7 +363,7 @@ git = "https://github.com/peaqnetwork/substrate"
 branch = "peaq-polkadot-v0.9.29"
 
 [dependencies.fp-dynamic-fee]
-git = "https://github.com/peaqnetwork/frontier"
+git = "https://github.com/talhadaar/frontier"
 branch = 'peaq-polkadot-v0.9.29'
 
 [dependencies.pallet-block-reward]

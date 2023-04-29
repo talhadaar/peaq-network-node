@@ -197,15 +197,15 @@ default-features = false
 git = 'https://github.com/peaqnetwork/peaq-pallet-transaction.git'
 branch = 'dev'
 
-[dependencies.peaq-pallet-rbac]
-git = 'https://github.com/peaqnetwork/peaq-pallet-rbac.git'
-default-features = false
-branch = 'dev'
+# [dependencies.peaq-pallet-rbac]
+# git = 'https://github.com/peaqnetwork/peaq-pallet-rbac.git'
+# default-features = false
+# branch = 'dev'
 
-[dependencies.peaq-pallet-rbac-runtime-api]
-git = 'https://github.com/peaqnetwork/peaq-pallet-rbac.git'
-default-features = false
-branch = 'dev'
+# [dependencies.peaq-pallet-rbac-runtime-api]
+# git = 'https://github.com/peaqnetwork/peaq-pallet-rbac.git'
+# default-features = false
+# branch = 'dev'
 
 [dependencies.peaq-pallet-storage]
 git = 'https://github.com/peaqnetwork/peaq-storage-pallet.git'
@@ -250,67 +250,67 @@ branch = 'peaq-polkadot-v0.9.29'
 
 [dependencies.fp-evm]
 default-features = false
-git = 'https://github.com/peaqnetwork/frontier'
+git = 'https://github.com/talhadaar/frontier'
 branch = 'peaq-polkadot-v0.9.29'
 
 [dependencies.fp-rpc]
 default-features = false
-git = 'https://github.com/peaqnetwork/frontier'
+git = 'https://github.com/talhadaar/frontier'
 branch = 'peaq-polkadot-v0.9.29'
 
 [dependencies.fp-self-contained]
 default-features = false
-git = 'https://github.com/peaqnetwork/frontier'
+git = 'https://github.com/talhadaar/frontier'
 branch = 'peaq-polkadot-v0.9.29'
 
 [dependencies.pallet-base-fee]
 default-features = false
-git = 'https://github.com/peaqnetwork/frontier'
+git = 'https://github.com/talhadaar/frontier'
 branch = 'peaq-polkadot-v0.9.29'
 
 [dependencies.pallet-dynamic-fee]
 default-features = false
-git = 'https://github.com/peaqnetwork/frontier'
+git = 'https://github.com/talhadaar/frontier'
 branch = 'peaq-polkadot-v0.9.29'
 
 [dependencies.pallet-ethereum]
 default-features = false
-git = 'https://github.com/peaqnetwork/frontier'
+git = 'https://github.com/talhadaar/frontier'
 branch = 'peaq-polkadot-v0.9.29'
 
 [dependencies.pallet-evm]
 default-features = false
-git = 'https://github.com/peaqnetwork/frontier'
+git = 'https://github.com/talhadaar/frontier'
 branch = 'peaq-polkadot-v0.9.29'
 
 [dependencies.pallet-evm-precompile-blake2]
 default-features = false
-git = 'https://github.com/peaqnetwork/frontier'
+git = 'https://github.com/talhadaar/frontier'
 branch = 'peaq-polkadot-v0.9.29'
 
 [dependencies.pallet-evm-precompile-bn128]
 default-features = false
-git = 'https://github.com/peaqnetwork/frontier'
+git = 'https://github.com/talhadaar/frontier'
 branch = 'peaq-polkadot-v0.9.29'
 
 [dependencies.pallet-evm-precompile-dispatch]
 default-features = false
-git = 'https://github.com/peaqnetwork/frontier'
+git = 'https://github.com/talhadaar/frontier'
 branch = 'peaq-polkadot-v0.9.29'
 
 [dependencies.pallet-evm-precompile-modexp]
 default-features = false
-git = 'https://github.com/peaqnetwork/frontier'
+git = 'https://github.com/talhadaar/frontier'
 branch = 'peaq-polkadot-v0.9.29'
 
 [dependencies.pallet-evm-precompile-sha3fips]
 default-features = false
-git = 'https://github.com/peaqnetwork/frontier'
+git = 'https://github.com/talhadaar/frontier'
 branch = 'peaq-polkadot-v0.9.29'
 
 [dependencies.pallet-evm-precompile-simple]
 default-features = false
-git = 'https://github.com/peaqnetwork/frontier'
+git = 'https://github.com/talhadaar/frontier'
 branch = 'peaq-polkadot-v0.9.29'
 
 
@@ -521,12 +521,13 @@ runtime-benchmarks = [
 
 	'peaq-pallet-transaction/runtime-benchmarks',
 	'peaq-pallet-did/runtime-benchmarks',
-	'peaq-pallet-rbac/runtime-benchmarks',
+	# 'peaq-pallet-rbac/runtime-benchmarks',
 	'peaq-pallet-storage/runtime-benchmarks',
 	'peaq-pallet-mor/runtime-benchmarks',
 ]
 
 std = [
+	"frame-try-runtime/std",
 	'codec/std',
 	'scale-info/std',
 	'frame-executive/std',
@@ -558,8 +559,8 @@ std = [
 	'peaq-pallet-did/std',
 	'peaq-pallet-did-runtime-api/std',
 	'peaq-pallet-transaction/std',
-	'peaq-pallet-rbac/std',
-	'peaq-pallet-rbac-runtime-api/std',
+	# 'peaq-pallet-rbac/std',
+	# 'peaq-pallet-rbac-runtime-api/std',
 	'peaq-pallet-storage/std',
 	'peaq-pallet-storage-runtime-api/std',
 	'peaq-pallet-mor/std',
@@ -634,13 +635,17 @@ evm-tracing = [
 
 try-runtime = [
 	 "frame-executive/try-runtime",
-	 "frame-try-runtime",
+ 	 "frame-support/try-runtime",
 	 "frame-system/try-runtime",
+	 "frame-try-runtime",
 	 "pallet-aura/try-runtime",
 	 "pallet-balances/try-runtime",
 	 "pallet-randomness-collective-flip/try-runtime",
 	 "pallet-sudo/try-runtime",
 	 "pallet-timestamp/try-runtime",
+	 "pallet-evm/try-runtime",
+	 "pallet-dynamic-fee/try-runtime",
+	 "pallet-base-fee/try-runtime",
 	 "pallet-transaction-payment/try-runtime",
 	 "pallet-contracts/try-runtime",
 	 "pallet-utility/try-runtime",
@@ -666,7 +671,5 @@ try-runtime = [
 	 "peaq-pallet-did/try-runtime",
 	 "peaq-pallet-transaction/try-runtime",
 	 "pallet-multisig/try-runtime",
-	 "peaq-pallet-rbac/try-runtime",
 	 "peaq-pallet-storage/try-runtime",
-	"frame-support/try-runtime",
 ]

@@ -31,7 +31,7 @@ sp-runtime = { git = "https://github.com/peaqnetwork/substrate", branch = "peaq-
 # Frontier
 ethereum = { version = "0.12.0", default-features = false, features = [ "with-codec" ] }
 ethereum-types = "0.13.1"
-fc-consensus = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.29" }
-fc-db = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.29" }
-fc-rpc = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.29", features = [ "rpc_binary_search_estimate" ] }
-fp-rpc = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.29" }
+fc-consensus = { git = "https://github.com/talhadaar/frontier", branch = "peaq-polkadot-v0.9.29" }
+fc-db = { git = "https://github.com/talhadaar/frontier", branch = "peaq-polkadot-v0.9.29" }
+fc-rpc = { git = "https://github.com/talhadaar/frontier", branch = "peaq-polkadot-v0.9.29", features = [ "rpc_binary_search_estimate" ] }
+fp-rpc = { git = "https://github.com/talhadaar/frontier", branch = "peaq-polkadot-v0.9.29" }

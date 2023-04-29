@@ -28,4 +28,4 @@ sp-std = { git = "https://github.com/peaqnetwork/substrate", branch = "peaq-polk
 
 # Frontier
 ethereum-types = "0.13.1"
-fc-rpc = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.29", features = [ "rpc_binary_search_estimate" ] }
+fc-rpc = { git = "https://github.com/talhadaar/frontier", branch = "peaq-polkadot-v0.9.29", features = [ "rpc_binary_search_estimate" ] }
