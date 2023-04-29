@@ -7489,7 +7489,6 @@ dependencies = [
  "peaq-dev-runtime",
  "peaq-krest-runtime",
  "peaq-pallet-did-rpc",
- "peaq-pallet-rbac-rpc",
  "peaq-pallet-storage-rpc",
  "peaq-primitives-ext",
  "peaq-primitives-xcm",
@@ -7615,53 +7614,6 @@ dependencies = [
  "sp-core",
  "sp-io",
  "sp-runtime",
- "sp-std",
-]
-
-[[package]]
-name = "peaq-pallet-rbac"
-version = "0.0.2"
-source = "git+https://github.com/peaqnetwork/peaq-pallet-rbac.git?branch=dev#9e3fd398243776fe8be0e6b7e0cb00fc623e2899"
-dependencies = [
- "frame-benchmarking",
- "frame-support",
- "frame-system",
- "pallet-timestamp",
- "parity-scale-codec",
- "scale-info",
- "serde",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "sp-std",
-]
-
-[[package]]
-name = "peaq-pallet-rbac-rpc"
-version = "0.0.2"
-source = "git+https://github.com/peaqnetwork/peaq-pallet-rbac.git?branch=dev#9e3fd398243776fe8be0e6b7e0cb00fc623e2899"
-dependencies = [
- "jsonrpc-core",
- "jsonrpc-core-client",
- "jsonrpc-derive",
- "jsonrpsee",
- "parity-scale-codec",
- "peaq-pallet-rbac",
- "peaq-pallet-rbac-runtime-api",
- "sp-api",
- "sp-blockchain",
- "sp-runtime",
- "sp-std",
-]
-
-[[package]]
-name = "peaq-pallet-rbac-runtime-api"
-version = "0.0.2"
-source = "git+https://github.com/peaqnetwork/peaq-pallet-rbac.git?branch=dev#9e3fd398243776fe8be0e6b7e0cb00fc623e2899"
-dependencies = [
- "parity-scale-codec",
- "peaq-pallet-rbac",
- "sp-api",
  "sp-std",
 ]
 
