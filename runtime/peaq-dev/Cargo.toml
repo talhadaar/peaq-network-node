@@ -672,4 +672,5 @@ try-runtime = [
 	 "peaq-pallet-transaction/try-runtime",
 	 "pallet-multisig/try-runtime",
 	 "peaq-pallet-storage/try-runtime",
+	 'peaq-pallet-mor/try-runtime'
 ]
