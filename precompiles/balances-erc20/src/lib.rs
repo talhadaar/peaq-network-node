@@ -17,7 +17,6 @@
 //! Precompile to interact with pallet_balances instances using the ERC20 interface standard.
 
 #![cfg_attr(not(feature = "std"), no_std)]
-#![cfg_attr(test, feature(assert_matches))]
 
 use fp_evm::PrecompileHandle;
 use frame_support::{
@@ -39,7 +38,6 @@ use sp_std::{
 	marker::PhantomData,
 };
 
-// TODO revisit later
 mod eip2612;
 use eip2612::Eip2612;
 
@@ -185,9 +183,9 @@ where
 	Metadata: Erc20Metadata,
 	Instance: InstanceToPrefix + 'static,
 	Runtime: pallet_balances::Config<Instance> + pallet_evm::Config + pallet_timestamp::Config,
-	Runtime::Call: Dispatchable<PostInfo = PostDispatchInfo> + GetDispatchInfo,
-	Runtime::Call: From<pallet_balances::Call<Runtime, Instance>>,
-	<Runtime::Call as Dispatchable>::Origin: From<Option<Runtime::AccountId>>,
+	Runtime::RuntimeCall: Dispatchable<PostInfo = PostDispatchInfo> + GetDispatchInfo,
+	Runtime::RuntimeCall: From<pallet_balances::Call<Runtime, Instance>>,
+	<Runtime::RuntimeCall as Dispatchable>::RuntimeOrigin: From<Option<Runtime::AccountId>>,
 	BalanceOf<Runtime, Instance>: TryFrom<U256> + Into<U256>,
 	<Runtime as pallet_timestamp::Config>::Moment: Into<U256>,
 {
@@ -283,7 +281,7 @@ where
 				Some(origin).into(),
 				pallet_balances::Call::<Runtime, Instance>::transfer {
 					dest: Runtime::Lookup::unlookup(to),
-					value,
+					value: value,
 				},
 			)?;
 		}
@@ -346,7 +344,7 @@ where
 				Some(from).into(),
 				pallet_balances::Call::<Runtime, Instance>::transfer {
 					dest: Runtime::Lookup::unlookup(to),
-					value,
+					value: value,
 				},
 			)?;
 		}
@@ -387,7 +385,7 @@ where
 	fn deposit(handle: &mut impl PrecompileHandle) -> EvmResult {
 		// Deposit only makes sense for the native currency.
 		if !Metadata::is_native_currency() {
-			return Err(RevertReason::UnknownSelector.into())
+			return Err(RevertReason::UnknownSelector.into());
 		}
 
 		let caller: Runtime::AccountId =
@@ -396,7 +394,7 @@ where
 		let amount = Self::u256_to_amount(handle.context().apparent_value)?;
 
 		if amount.into() == U256::from(0u32) {
-			return Err(revert("deposited amount must be non-zero"))
+			return Err(revert("deposited amount must be non-zero"));
 		}
 
 		handle.record_log_costs_manual(2, 32)?;
@@ -426,7 +424,7 @@ where
 	fn withdraw(handle: &mut impl PrecompileHandle, value: U256) -> EvmResult {
 		// Withdraw only makes sense for the native currency.
 		if !Metadata::is_native_currency() {
-			return Err(RevertReason::UnknownSelector.into())
+			return Err(RevertReason::UnknownSelector.into());
 		}
 
 		handle.record_log_costs_manual(2, 32)?;
@@ -438,7 +436,7 @@ where
 		};
 
 		if value > account_amount {
-			return Err(revert("Trying to withdraw more than owned"))
+			return Err(revert("Trying to withdraw more than owned"));
 		}
 
 		log2(
