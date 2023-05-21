@@ -187,6 +187,14 @@ impl CurrencyId {
 	pub fn is_erc20_currency_id(&self) -> bool {
 		matches!(self, CurrencyId::Erc20(_))
 	}
+
+	pub fn erc20_address(&self) -> Option<EvmAddress> {
+		match self {
+			CurrencyId::Erc20(address) => Some(*address),
+			CurrencyId::Token(_) => EvmAddress::try_from(*self).ok(),
+			_ => None,
+		}
+	}
 }
 
 /// Generate the EvmAddress from CurrencyId so that evm contracts can call the erc20 contract.
@@ -201,4 +209,13 @@ impl TryFrom<CurrencyId> for EvmAddress {
 			CurrencyId::Erc20(address) => Ok(address),
 		}
 	}
+}
+
+/// H160 CurrencyId Type enum
+#[derive(
+	Encode, Decode, Eq, PartialEq, Copy, Clone, RuntimeDebug, PartialOrd, Ord, TryFromPrimitive, IntoPrimitive, TypeInfo,
+)]
+#[repr(u8)]
+pub enum CurrencyIdType {
+	Token = 1, // 0 is prefix of precompile and predeploy
 }
