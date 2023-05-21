@@ -49,6 +49,7 @@ pub const CHAIN_ID_KREST: u64 = 596u64;
 /// peaq-dev 
 pub const CHAIN_ID_DEV: u64 = 597u64;
 
+// RESEARCH what are these for??
 // GAS MASK
 const GAS_MASK: u64 = 100_000u64;
 // STORAGE MASK
@@ -132,6 +133,7 @@ pub struct EthereumTransactionMessage {
 	pub access_list: Vec<AccessListItem>,
 }
 
+// FIXME correct prefixes for peaq's addressing scheme
 /// Ethereum precompiles
 /// 0 - 0x0000000000000000000000000000000000000400
 /// Acala precompiles
@@ -176,59 +178,6 @@ pub const SYSTEM_CONTRACT_ADDRESS_PREFIX: [u8; 9] = [0u8; 9];
 /// It's system contract if the address starts with SYSTEM_CONTRACT_ADDRESS_PREFIX.
 pub fn is_system_contract(address: EvmAddress) -> bool {
 	address.as_bytes().starts_with(&SYSTEM_CONTRACT_ADDRESS_PREFIX)
-}
-
-pub const H160_POSITION_CURRENCY_ID_TYPE: usize = 9;
-pub const H160_POSITION_TOKEN: usize = 19;
-pub const H160_POSITION_TOKEN_NFT: Range<usize> = 16..20;
-pub const H160_POSITION_DEXSHARE_LEFT_TYPE: usize = 10;
-pub const H160_POSITION_DEXSHARE_LEFT_FIELD: Range<usize> = 11..15;
-pub const H160_POSITION_DEXSHARE_RIGHT_TYPE: usize = 15;
-pub const H160_POSITION_DEXSHARE_RIGHT_FIELD: Range<usize> = 16..20;
-pub const H160_POSITION_STABLE_ASSET: Range<usize> = 16..20;
-pub const H160_POSITION_LIQUID_CROADLOAN: Range<usize> = 16..20;
-pub const H160_POSITION_FOREIGN_ASSET: Range<usize> = 18..20;
-
-/// Generate the EvmAddress from CurrencyId so that evm contracts can call the erc20 contract.
-/// NOTE: Can not be used directly, need to check the erc20 is mapped.
-impl TryFrom<CurrencyId> for EvmAddress {
-	type Error = ();
-
-	fn try_from(val: CurrencyId) -> Result<Self, Self::Error> {
-		let mut address = [0u8; 20];
-		match val {
-			CurrencyId::Token(token) => {
-				address[H160_POSITION_CURRENCY_ID_TYPE] = CurrencyIdType::Token.into();
-				address[H160_POSITION_TOKEN] = token.into();
-			}
-			CurrencyId::DexShare(left, right) => {
-				let left_field: u32 = left.into();
-				let right_field: u32 = right.into();
-				address[H160_POSITION_CURRENCY_ID_TYPE] = CurrencyIdType::DexShare.into();
-				address[H160_POSITION_DEXSHARE_LEFT_TYPE] = Into::<DexShareType>::into(left).into();
-				address[H160_POSITION_DEXSHARE_LEFT_FIELD].copy_from_slice(&left_field.to_be_bytes());
-				address[H160_POSITION_DEXSHARE_RIGHT_TYPE] = Into::<DexShareType>::into(right).into();
-				address[H160_POSITION_DEXSHARE_RIGHT_FIELD].copy_from_slice(&right_field.to_be_bytes());
-			}
-			CurrencyId::Erc20(erc20) => {
-				address[..].copy_from_slice(erc20.as_bytes());
-			}
-			CurrencyId::StableAssetPoolToken(stable_asset_id) => {
-				address[H160_POSITION_CURRENCY_ID_TYPE] = CurrencyIdType::StableAsset.into();
-				address[H160_POSITION_STABLE_ASSET].copy_from_slice(&stable_asset_id.to_be_bytes());
-			}
-			CurrencyId::LiquidCrowdloan(lease) => {
-				address[H160_POSITION_CURRENCY_ID_TYPE] = CurrencyIdType::LiquidCrowdloan.into();
-				address[H160_POSITION_LIQUID_CROADLOAN].copy_from_slice(&lease.to_be_bytes());
-			}
-			CurrencyId::ForeignAsset(foreign_asset_id) => {
-				address[H160_POSITION_CURRENCY_ID_TYPE] = CurrencyIdType::ForeignAsset.into();
-				address[H160_POSITION_FOREIGN_ASSET].copy_from_slice(&foreign_asset_id.to_be_bytes());
-			}
-		};
-
-		Ok(EvmAddress::from_slice(&address))
-	}
 }
 
 pub fn decode_gas_price(gas_price: u64, gas_limit: u64, tx_fee_per_gas: u128) -> Option<(u128, u32)> {
@@ -282,6 +231,8 @@ pub fn decode_gas_limit(gas_limit: u64) -> (u64, u32) {
 	(actual_gas_limit, actual_storage_limit)
 }
 
+
+// FIXME convert to decimals 18
 #[cfg(not(feature = "evm-tests"))]
 mod convert {
 	use sp_runtime::traits::{CheckedDiv, Saturating, Zero};

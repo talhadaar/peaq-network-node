@@ -25,7 +25,7 @@ use sp_std::{
 	convert::{Into, TryFrom},
 	prelude::*,
 };
-
+pub use num_enum::{TryFromPrimitive, IntoPrimitive};
 #[cfg(feature = "std")]
 use serde::{Deserialize, Serialize};
 
