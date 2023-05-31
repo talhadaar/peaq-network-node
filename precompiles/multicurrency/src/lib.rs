@@ -61,7 +61,6 @@ use frame_support::sp_runtime::{traits::Convert, RuntimeDebug};
 use peaq_primitives_xcm::{currency::CurrencyId, evm::EvmAddress, Balance};
 use sp_core::H160;
 use sp_std::{marker::PhantomData, prelude::*};
-
 // TODO implement this
 /// A mapping between u32 and Erc20 address.
 /// provide a way to encode/decode for CurrencyId;
@@ -230,17 +229,17 @@ where
 
 		let to: H160 = to.into();
 		let to: Runtime::AccountId = Runtime::AddressMapping::into_account_id(to);
-		// let amount = Self::u256_to_amount(amount).in_field("value")?;
+		let amount: Balance = amount.try_into().unwrap();
 
 		let currency_id = Erc20InfoMapping::decode_evm_address(handle.context().caller).unwrap();
 
-		// <orml_currencies::Pallet<Runtime> as MultiCurrencyT<Runtime::AccountId>>::transfer(
-		// 	currency_id,
-		// 	&from,
-		// 	&to,
-		// 	amount as u128,
-		// )
-		// .unwrap();
+		<orml_currencies::Pallet<Runtime> as MultiCurrencyT<Runtime::AccountId>>::transfer(
+			currency_id,
+			&from,
+			&to,
+			amount,
+		)
+		.unwrap();
 
 		Ok(bool::default())
 	}
