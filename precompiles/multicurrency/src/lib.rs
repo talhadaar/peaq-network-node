@@ -103,4 +103,51 @@ where
 		Ok(Balance::default())
 	}
 
+	#[precompile::public("balanceOf(address)")]
+	#[precompile::view]
+	fn balance(handle: &mut impl PrecompileHandle, who: Address) -> EvmResult<Balance> {
+		handle.record_cost(RuntimeHelper::<Runtime>::db_read_gas_cost())?;
+		let who: H160 = who.into();
+		let who: Runtime::AccountId = Runtime::AddressMapping::into_account_id(who);
+
+		let currency_id = Metadata::decode_evm_address(handle.context().caller).unwrap();
+
+		let balance = if currency_id == <Runtime as
+					orml_currencies::Config>::GetNativeCurrencyId::get(){
+								return <Runtime as pallet_evm::Config>::Currency::free_balance(&who)
+							} else {
+								return <Runtime as orml_currencies::Config>::MultiCurrency::total_balance(currency_id,
+		&who) 				};
+
+		Ok(Balance::default())
+	}
+
+	#[precompile::public("transfer(address, address, uint256)")]
+	fn transfer(
+		handle: &mut impl PrecompileHandle,
+		from: Address,
+		to: Address,
+		amount: U256,
+	) -> EvmResult<bool> {
+		handle.record_cost(RuntimeHelper::<Runtime>::db_read_gas_cost())?;
+		let from: H160 = from.into();
+		let from: Runtime::AccountId = Runtime::AddressMapping::into_account_id(from);
+
+		let to: H160 = to.into();
+		let to: Runtime::AccountId = Runtime::AddressMapping::into_account_id(to);
+		let amount: Balance = amount.try_into().unwrap();
+
+		let currency_id = Metadata::decode_evm_address(handle.context().caller).unwrap();
+
+		<orml_currencies::Pallet<Runtime> as MultiCurrencyT<Runtime::AccountId>>::transfer(
+			currency_id,
+			&from,
+			&to,
+			amount,
+		)
+		.unwrap();
+
+		Ok(bool::default())
+	}
+
 }
