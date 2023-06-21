@@ -72,4 +72,35 @@ where
 
 		Ok(Metadata::name(currency_id).unwrap().into())
 	}
+
+    #[precompile::public("symbol()")]
+	#[precompile::view]
+	fn symbol(handle: &mut impl PrecompileHandle) -> EvmResult<UnboundedBytes> {
+		handle.record_cost(RuntimeHelper::<Runtime>::db_read_gas_cost())?;
+		let currency_id = Metadata::decode_evm_address(handle.context().caller).unwrap();
+
+		Ok(Metadata::symbol(currency_id).unwrap().into())
+	}
+
+	#[precompile::public("decimals()")]
+	#[precompile::view]
+	fn decimals(handle: &mut impl PrecompileHandle) -> EvmResult<u8> {
+		handle.record_cost(RuntimeHelper::<Runtime>::db_read_gas_cost())?;
+		let currency_id = Metadata::decode_evm_address(handle.context().caller).unwrap();
+
+		Ok(Metadata::decimals(currency_id).unwrap())
+	}
+
+	#[precompile::public("total_issuance()")]
+	#[precompile::view]
+	fn total_issuance(handle: &mut impl PrecompileHandle) -> EvmResult<Balance> {
+		handle.record_cost(RuntimeHelper::<Runtime>::db_read_gas_cost())?;
+		let currency_id = Metadata::decode_evm_address(handle.context().caller).unwrap();
+
+		let total_issuance =
+			<Runtime as orml_currencies::Config>::MultiCurrency::total_issuance(currency_id);
+
+		Ok(Balance::default())
+	}
+
 }
