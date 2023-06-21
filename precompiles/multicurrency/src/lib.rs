@@ -98,7 +98,7 @@ where
 		let currency_id = Metadata::decode_evm_address(handle.context().caller).unwrap();
 
 		let total_issuance =
-			<Runtime as orml_currencies::Config>::MultiCurrency::total_issuance(currency_id);
+			<orml_currencies::Pallet<Runtime> as MultiCurrencyT<Runtime::AccountId>>::total_issuance(currency_id);
 
 		Ok(Balance::default())
 	}
@@ -112,12 +112,12 @@ where
 
 		let currency_id = Metadata::decode_evm_address(handle.context().caller).unwrap();
 
-		let balance = if currency_id == <Runtime as
-					orml_currencies::Config>::GetNativeCurrencyId::get(){
-								return <Runtime as pallet_evm::Config>::Currency::free_balance(&who)
-							} else {
-								return <Runtime as orml_currencies::Config>::MultiCurrency::total_balance(currency_id,
-		&who) 				};
+		// let balance = if currency_id == <Runtime as
+		// 			orml_currencies::Config>::GetNativeCurrencyId::get(){
+		// 						return <Runtime as pallet_evm::Config>::Currency::free_balance(&who)
+		// 					} else {
+		// 						return <Runtime as orml_currencies::Config>::MultiCurrency::total_balance(currency_id,
+		// &who) 				};
 
 		Ok(Balance::default())
 	}
@@ -139,13 +139,13 @@ where
 
 		let currency_id = Metadata::decode_evm_address(handle.context().caller).unwrap();
 
-		<orml_currencies::Pallet<Runtime> as MultiCurrencyT<Runtime::AccountId>>::transfer(
-			currency_id,
-			&from,
-			&to,
-			amount,
-		)
-		.unwrap();
+		// <orml_currencies::Pallet<Runtime> as MultiCurrencyT<Runtime::AccountId>>::transfer(
+		// 	currency_id,
+		// 	&from,
+		// 	&to,
+		// 	amount,
+		// )
+		// .unwrap();
 
 		Ok(bool::default())
 	}
