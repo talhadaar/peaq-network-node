@@ -1,11 +1,9 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 #![recursion_limit = "256"]
 
-
 use sp_runtime::Perbill;
 
 use frame_support::parameter_types;
-
 
 /// Balance of an account.
 pub type Balance = peaq_primitives_xcm::Balance;

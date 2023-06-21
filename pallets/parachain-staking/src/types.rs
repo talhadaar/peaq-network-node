@@ -220,7 +220,9 @@ where
 {
 	pub fn try_new(collator: AccountId, amount: Balance) -> Result<Self, ()> {
 		Ok(Delegator {
-			delegations: OrderedSet::from(vec![Stake { owner: collator, amount }].try_into().unwrap()),
+			delegations: OrderedSet::from(
+				vec![Stake { owner: collator, amount }].try_into().unwrap(),
+			),
 			total: amount,
 		})
 	}

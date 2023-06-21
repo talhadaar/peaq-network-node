@@ -112,14 +112,8 @@ where
 
 		let nonce = NoncesStorage::<Instance>::get(owner);
 
-		let permit = Self::generate_permit(
-			handle.context().address,
-			owner,
-			spender,
-			value,
-			nonce,
-			deadline,
-		);
+		let permit =
+			Self::generate_permit(handle.context().address, owner, spender, value, nonce, deadline);
 
 		let mut sig = [0u8; 65];
 		sig[0..32].copy_from_slice(&r.as_bytes());
@@ -130,10 +124,7 @@ where
 			.map_err(|_| revert("Invalid permit"))?;
 		let signer = H160::from(H256::from_slice(keccak_256(&signer).as_slice()));
 
-		ensure!(
-			signer != H160::zero() && signer == owner,
-			revert("Invalid permit")
-		);
+		ensure!(signer != H160::zero() && signer == owner, revert("Invalid permit"));
 
 		NoncesStorage::<Instance>::insert(owner, nonce + U256::one());
 

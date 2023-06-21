@@ -113,12 +113,12 @@ where
 
 		let currency_id = Metadata::decode_evm_address(handle.context().caller).unwrap();
 
-		// let balance = if currency_id == <Runtime as
-		// 			orml_currencies::Config>::GetNativeCurrencyId::get(){
-		// 						return <Runtime as pallet_evm::Config>::Currency::free_balance(&who)
-		// 					} else {
-		// 						return <Runtime as orml_currencies::Config>::MultiCurrency::total_balance(currency_id,
-		// &who) 				};
+		// TODO what if currency in question is native currency
+		let balance =
+			<orml_currencies::Pallet<Runtime> as MultiCurrencyT<Runtime::AccountId>>::total_balance(
+				currency_id,
+				&who,
+			);
 
 		Ok(Balance::default())
 	}
