@@ -6789,6 +6789,38 @@ dependencies = [
 ]
 
 [[package]]
+name = "pallet-evm-precompile-multicurrency"
+version = "0.1.0"
+dependencies = [
+ "derive_more",
+ "fp-evm",
+ "frame-support",
+ "frame-system",
+ "hex-literal",
+ "libsecp256k1",
+ "log",
+ "num_enum",
+ "orml-currencies",
+ "orml-traits",
+ "pallet-balances",
+ "pallet-evm",
+ "pallet-timestamp",
+ "pallet-transaction-payment",
+ "parity-scale-codec",
+ "paste",
+ "peaq-primitives-xcm",
+ "precompile-utils",
+ "scale-info",
+ "serde",
+ "sha3 0.10.8",
+ "slices",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
 name = "pallet-evm-precompile-sha3fips"
 version = "2.0.0-dev"
 source = "git+https://github.com/peaqnetwork/frontier?branch=peaq-polkadot-v0.9.38#e9481a3995da9b8ec0da391d549d4a34c6068f15"
