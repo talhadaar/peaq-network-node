@@ -140,13 +140,13 @@ where
 
 		let currency_id = Metadata::decode_evm_address(handle.context().caller).unwrap();
 
-		// <orml_currencies::Pallet<Runtime> as MultiCurrencyT<Runtime::AccountId>>::transfer(
-		// 	currency_id,
-		// 	&from,
-		// 	&to,
-		// 	amount,
-		// )
-		// .unwrap();
+		<orml_currencies::Pallet<Runtime> as MultiCurrencyT<Runtime::AccountId>>::transfer(
+			currency_id,
+			&from,
+			&to,
+			amount,
+		)
+		.unwrap();
 
 		Ok(bool::default())
 	}
