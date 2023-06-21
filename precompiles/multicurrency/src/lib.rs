@@ -101,7 +101,7 @@ where
 			Runtime::AccountId,
 		>>::total_issuance(currency_id);
 
-		Ok(Balance::default())
+		Ok(total_issuance)
 	}
 
 	#[precompile::public("balanceOf(address)")]
@@ -120,7 +120,7 @@ where
 				&who,
 			);
 
-		Ok(Balance::default())
+		Ok(balance)
 	}
 
 	#[precompile::public("transfer(address, address, uint256)")]
@@ -148,6 +148,6 @@ where
 		)
 		.unwrap();
 
-		Ok(bool::default())
+		Ok(true)
 	}
 }
