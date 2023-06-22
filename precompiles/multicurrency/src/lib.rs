@@ -18,11 +18,13 @@
 
 // primitives and utils imports
 
-use sp_core::{H160, U256};
-use sp_std::marker::PhantomData;
-
 use peaq_primitives_xcm::{currency::CurrencyId, evm::Erc20InfoMappingT, Balance};
 use precompile_utils::prelude::*;
+use sp_core::{H160, H256, U256};
+use sp_std::{
+	convert::{TryFrom, TryInto},
+	marker::PhantomData,
+};
 
 use fp_evm::PrecompileHandle;
 
@@ -31,6 +33,9 @@ use pallet_evm::AddressMapping;
 
 // orml imports
 use orml_traits::MultiCurrency as MultiCurrencyT;
+
+/// Solidity selector of the Transfer log, which is the Keccak of the Log signature.
+pub const SELECTOR_LOG_TRANSFER: [u8; 32] = keccak256!("transfer(address,address,uint256)");
 
 // /// The `MultiCurrency` impl precompile.
 // ///
@@ -52,6 +57,7 @@ where
 	Runtime: pallet_evm::Config + orml_currencies::Config,
 	orml_currencies::Pallet<Runtime>:
 		MultiCurrencyT<Runtime::AccountId, CurrencyId = CurrencyId, Balance = Balance>,
+	H256: From<<Runtime as frame_system::pallet::Config>::AccountId>,
 {
 	#[precompile::public("name()")]
 	#[precompile::view]
@@ -129,6 +135,7 @@ where
 
 		let currency_id = Metadata::decode_evm_address(handle.context().caller).unwrap();
 
+		// TODO build call with origin using RuntimeHelper?
 		<orml_currencies::Pallet<Runtime> as MultiCurrencyT<Runtime::AccountId>>::transfer(
 			currency_id,
 			&from,
@@ -136,6 +143,16 @@ where
 			amount,
 		)
 		.unwrap();
+
+		log4(
+			handle.context().address,
+			SELECTOR_LOG_TRANSFER,
+			handle.context().caller,
+			to,
+			from,
+			EvmDataWriter::new().write(amount).build(),
+		)
+		.record(handle)?;
 
 		Ok(true)
 	}
