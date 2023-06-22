@@ -17,30 +17,19 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 // primitives and utils imports
-use num_enum::{IntoPrimitive, TryFromPrimitive};
 
-use sp_core::{uint, H160, U256};
-use sp_std::{marker::PhantomData, prelude::*};
+use sp_core::{H160, U256};
+use sp_std::marker::PhantomData;
 
-use peaq_primitives_xcm::{
-	currency::CurrencyId,
-	evm::{Erc20InfoMappingT, EvmAddress},
-	Balance,
-};
+use peaq_primitives_xcm::{currency::CurrencyId, evm::Erc20InfoMappingT, Balance};
 use precompile_utils::prelude::*;
 
 use fp_evm::PrecompileHandle;
 
 // frame imports
-use frame_support::{
-	log,
-	sp_runtime::{traits::Convert, RuntimeDebug},
-	traits::{Currency, Get},
-};
 use pallet_evm::AddressMapping;
 
 // orml imports
-use orml_currencies::WeightInfo;
 use orml_traits::MultiCurrency as MultiCurrencyT;
 
 // /// The `MultiCurrency` impl precompile.
