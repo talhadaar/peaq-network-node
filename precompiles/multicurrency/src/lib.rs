@@ -21,10 +21,7 @@
 use peaq_primitives_xcm::{currency::CurrencyId, evm::Erc20InfoMappingT, Balance};
 use precompile_utils::prelude::*;
 use sp_core::{H160, H256, U256};
-use sp_std::{
-	convert::{TryFrom, TryInto},
-	marker::PhantomData,
-};
+use sp_std::{convert::TryInto, marker::PhantomData};
 
 use fp_evm::PrecompileHandle;
 
