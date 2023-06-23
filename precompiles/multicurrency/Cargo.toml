@@ -20,28 +20,15 @@ codec = { package = "parity-scale-codec", version = "3.0.0", default-features = 
 frame-support = { git = "https://github.com/peaqnetwork/substrate", default-features = false , branch = "peaq-polkadot-v0.9.38" }
 frame-system = { git = "https://github.com/peaqnetwork/substrate", default-features = false , branch = "peaq-polkadot-v0.9.38" }
 pallet-balances = { git = "https://github.com/peaqnetwork/substrate", default-features = false , branch = "peaq-polkadot-v0.9.38" }
-pallet-timestamp = { git = "https://github.com/peaqnetwork/substrate", default-features = false , branch = "peaq-polkadot-v0.9.38" }
 sp-core = { git = "https://github.com/peaqnetwork/substrate", default-features = false , branch = "peaq-polkadot-v0.9.38" }
 sp-io = { git = "https://github.com/peaqnetwork/substrate", default-features = false , branch = "peaq-polkadot-v0.9.38" }
 sp-std = { git = "https://github.com/peaqnetwork/substrate", default-features = false , branch = "peaq-polkadot-v0.9.38" }
 orml-currencies = { git = "https://github.com/peaqnetwork/open-runtime-module-library", default-features = false , branch = "peaq-polkadot-v0.9.38" }
 orml-traits = { git = "https://github.com/peaqnetwork/open-runtime-module-library", default-features = false , branch = "peaq-polkadot-v0.9.38" }
-pallet-transaction-payment = { git = "https://github.com/peaqnetwork/substrate", default-features = false , branch = "peaq-polkadot-v0.9.38" }
 
 # Frontier
 fp-evm = { git = "https://github.com/peaqnetwork/frontier", default-features = false , branch = "peaq-polkadot-v0.9.38" }
 pallet-evm = { git = "https://github.com/peaqnetwork/frontier", default-features = false, features = [ "forbid-evm-reentrancy" ] , branch = "peaq-polkadot-v0.9.38" }
-
-[dev-dependencies]
-derive_more = { version = "0.99" }
-hex-literal = "0.3.4"
-libsecp256k1 = "0.7"
-serde = { version = "1.0.100" }
-sha3 = "0.10"
-
-pallet-timestamp = { git = "https://github.com/peaqnetwork/substrate", branch = "peaq-polkadot-v0.9.38" }
-scale-info = { version = "2.0", default-features = false, features = [ "derive" ] }
-sp-runtime = { git = "https://github.com/peaqnetwork/substrate", branch = "peaq-polkadot-v0.9.38" }
 
 [features]
 default = [ "std" ]
@@ -56,7 +43,6 @@ std = [
 	"sp-core/std",
 	"sp-io/std",
 	"sp-std/std",
-    'pallet-transaction-payment/std',
     "orml-currencies/std",
 	"orml-traits/std",
 	"peaq-primitives-xcm/std",
