@@ -41,6 +41,8 @@ use sp_std::{
 mod eip2612;
 use eip2612::Eip2612;
 
+use peaq_primitives_xcm::evm::Erc20MetadataT;
+
 // #[cfg(test)]
 // mod mock;
 // #[cfg(test)]
@@ -154,33 +156,17 @@ pub type NoncesStorage<Instance> = StorageMap<
 	ValueQuery,
 >;
 
-/// Metadata of an ERC20 token.
-pub trait Erc20Metadata {
-	/// Returns the name of the token.
-	fn name() -> &'static str;
-
-	/// Returns the symbol of the token.
-	fn symbol() -> &'static str;
-
-	/// Returns the decimals places of the token.
-	fn decimals() -> u8;
-
-	/// Must return `true` only if it represents the main native currency of
-	/// the network. It must be the currency used in `pallet_evm`.
-	fn is_native_currency() -> bool;
-}
-
 /// Precompile exposing a pallet_balance as an ERC20.
 /// Multiple precompiles can support instances of pallet_balance.
 /// The precompile uses an additional storage to store approvals.
-pub struct Erc20BalancesPrecompile<Runtime, Metadata: Erc20Metadata, Instance: 'static = ()>(
+pub struct Erc20BalancesPrecompile<Runtime, Metadata: Erc20MetadataT, Instance: 'static = ()>(
 	PhantomData<(Runtime, Metadata, Instance)>,
 );
 
 #[precompile_utils::precompile]
 impl<Runtime, Metadata, Instance> Erc20BalancesPrecompile<Runtime, Metadata, Instance>
 where
-	Metadata: Erc20Metadata,
+	Metadata: Erc20MetadataT,
 	Instance: InstanceToPrefix + 'static,
 	Runtime: pallet_balances::Config<Instance> + pallet_evm::Config + pallet_timestamp::Config,
 	Runtime::RuntimeCall: Dispatchable<PostInfo = PostDispatchInfo> + GetDispatchInfo,

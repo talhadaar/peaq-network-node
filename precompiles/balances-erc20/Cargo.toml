@@ -13,6 +13,7 @@ slices = "0.2.0"
 
 # Moonbeam
 precompile-utils = { path = "../utils", default-features = false }
+peaq-primitives-xcm = {path = "../../primitives/xcm", default-features = false}
 
 # Substrate
 codec = { package = "parity-scale-codec", version = "3.0.0", default-features = false, features = [ "max-encoded-len" ] }
@@ -41,5 +42,6 @@ std = [
 	"sp-core/std",
 	"sp-io/std",
 	"sp-std/std",
-    "pallet-timestamp/std"
+    "pallet-timestamp/std",
+	"peaq-primitives-xcm/std"
 ]

@@ -6,6 +6,22 @@ use alloc::vec::Vec;
 /// Evm Address.
 pub type EvmAddress = sp_core::H160;
 
+/// Metadata of an ERC20 token.
+pub trait Erc20MetadataT {
+	/// Returns the name of the token.
+	fn name() -> &'static str;
+
+	/// Returns the symbol of the token.
+	fn symbol() -> &'static str;
+
+	/// Returns the decimals places of the token.
+	fn decimals() -> u8;
+
+	/// Must return `true` only if it represents the main native currency of
+	/// the network. It must be the currency used in `pallet_evm`.
+	fn is_native_currency() -> bool;
+}
+
 /// A mapping between u32 and Erc20 address.
 /// provide a way to encode/decode for CurrencyId;
 pub trait Erc20InfoMappingT {

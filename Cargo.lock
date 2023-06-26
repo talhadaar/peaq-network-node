@@ -6590,6 +6590,7 @@ dependencies = [
  "pallet-timestamp",
  "parity-scale-codec",
  "paste",
+ "peaq-primitives-xcm",
  "precompile-utils",
  "slices",
  "sp-core",

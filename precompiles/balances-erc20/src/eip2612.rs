@@ -34,7 +34,7 @@ pub struct Eip2612<Runtime, Metadata, Instance = ()>(PhantomData<(Runtime, Metad
 
 impl<Runtime, Metadata, Instance> Eip2612<Runtime, Metadata, Instance>
 where
-	Metadata: Erc20Metadata,
+	Metadata: Erc20MetadataT,
 	Instance: InstanceToPrefix + 'static,
 	Runtime: pallet_balances::Config<Instance> + pallet_evm::Config + pallet_timestamp::Config,
 	Runtime::RuntimeCall: Dispatchable<PostInfo = PostDispatchInfo> + GetDispatchInfo,
