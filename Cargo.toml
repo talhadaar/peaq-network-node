@@ -6,6 +6,7 @@ members = [
     'primitives/xcm',
     'precompiles/utils',
     'precompiles/utils/macro',
+    'precompiles/balances-erc20',
 ]
 
 # make sure dev builds with backtrace do
