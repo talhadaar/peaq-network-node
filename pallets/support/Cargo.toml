@@ -1,0 +1,42 @@
+[package]
+name = "pallet-support"
+version = "0.1.0"
+authors = ["Acala Developers"]
+edition = "2021"
+
+[dependencies]
+impl-trait-for-tuples = { workspace = true }
+codec = { package = "parity-scale-codec", workspace = true, default-features = false, features = ["derive"] }
+scale-info = { workspace = true, default-features = false, features = ["derive"] }
+serde = { workspace = true, default-features = false, optional = true }
+
+frame-support = { workspace = true, default-features = false }
+sp-runtime = { workspace = true, default-features = false }
+sp-std = { workspace = true, default-features = false }
+sp-core = { workspace = true, default-features = false }
+sp-io = { workspace = true, default-features = false }
+xcm = { workspace = true, default-features = false }
+fp-evm = { workspace = true, default-features = false }
+
+orml-tokens = { workspace = true, default-features = false }
+peaq-primitives-xcm = { path = "../../primitives/xcm", default-features = false }
+
+[dev-dependencies]
+serde_json = { workspace = true }
+
+[features]
+default = ["std"]
+std = [
+	"codec/std",
+	"frame-support/std",
+	"orml-tokens/std",
+	"peaq-primitives-xcm/std",
+	"scale-info/std",
+	"serde",
+	"sp-core/std",
+	"sp-io/std",
+	"sp-runtime/std",
+	"sp-std/std",
+	"xcm/std",
+	"fp-evm/std",
+]

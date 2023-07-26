@@ -202,3 +202,9 @@ impl TryFrom<CurrencyId> for EvmAddress {
 		}
 	}
 }
+
+#[derive(Clone, Eq, PartialEq, RuntimeDebug, Encode, Decode, TypeInfo)]
+pub enum AssetIds {
+	Erc20(EvmAddress),
+	Token(TokenSymbol),
+}
