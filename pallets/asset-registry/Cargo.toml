@@ -1,0 +1,45 @@
+[package]
+name = "pallet-asset-registry"
+version = "0.1.0"
+authors = ["peaq network"]
+edition = "2021"
+
+[dependencies]
+log = { workspace = true, default-features = false }
+scale-info = { workspace = true, default-features = false, features = [
+    "derive",
+] }
+codec = { package = "parity-scale-codec", workspace = true, default-features = false }
+sp-runtime = { workspace = true, default-features = false }
+sp-std = { workspace = true, default-features = false }
+frame-support = { workspace = true, default-features = false }
+frame-system = { workspace = true, default-features = false }
+peaq-primitives-xcm = { path = "../../primitives/xcm", default-features = false }
+
+xcm = { workspace = true, default-features = false }
+
+pallet-support = { path = "../support", default-features = false }
+
+[dev-dependencies]
+serde_json = { workspace = true }
+hex = { workspace = true }
+sp-core = { workspace = true }
+sp-io = { workspace = true }
+pallet-balances = { workspace = true }
+pallet-timestamp = { workspace = true }
+
+[features]
+default = ["std"]
+std = [
+    "log/std",
+    "codec/std",
+    "scale-info/std",
+    "sp-runtime/std",
+    "sp-std/std",
+    "frame-support/std",
+    "frame-system/std",
+    "peaq-primitives-xcm/std",
+    "xcm/std",
+    "pallet-support/std",
+]
+try-runtime = ["frame-support/try-runtime", "frame-system/try-runtime"]
