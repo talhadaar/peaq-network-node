@@ -20,11 +20,13 @@ use crate::{evm::EvmAddress, *};
 use bstringify::bstringify;
 use codec::{Decode, Encode, MaxEncodedLen};
 use scale_info::TypeInfo;
+use sp_core::H160;
 use sp_runtime::RuntimeDebug;
 use sp_std::{
-	convert::{Into, TryFrom},
+	convert::{Into, TryFrom, From},
 	prelude::*,
 };
+use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 #[cfg(feature = "std")]
 use serde::{Deserialize, Serialize};
@@ -159,6 +161,9 @@ pub trait TokenInfo {
 	fn decimals(&self) -> Option<u8>;
 }
 
+pub type ForeignAssetId = u16;
+pub type Erc20Id = u32;
+
 #[derive(
 	Encode,
 	Decode,
@@ -177,6 +182,7 @@ pub trait TokenInfo {
 pub enum CurrencyId {
 	Token(TokenSymbol),
 	Erc20(EvmAddress),
+	ForeignAsset(ForeignAssetId),
 }
 
 impl CurrencyId {
@@ -186,6 +192,10 @@ impl CurrencyId {
 
 	pub fn is_erc20_currency_id(&self) -> bool {
 		matches!(self, CurrencyId::Erc20(_))
+	}
+
+	pub fn is_foreign_asset_currency_id(&self) -> bool {
+		matches!(self, CurrencyId::ForeignAsset(_))
 	}
 }
 
@@ -199,12 +209,32 @@ impl TryFrom<CurrencyId> for EvmAddress {
 				MIRRORED_TOKENS_ADDRESS_START | u64::from(val.currency_id().unwrap()),
 			)),
 			CurrencyId::Erc20(address) => Ok(address),
+			_ => Err(()),
 		}
 	}
+}
+
+/// H160 CurrencyId Type enum
+#[derive(
+	Encode, Decode, Eq, PartialEq, Copy, Clone, RuntimeDebug, PartialOrd, Ord, TryFromPrimitive, IntoPrimitive, TypeInfo,
+)]
+#[repr(u8)]
+pub enum CurrencyIdType {
+	Token = 1, // 0 is prefix of precompile and predeploy
+	ForeignAsset,
 }
 
 #[derive(Clone, Eq, PartialEq, RuntimeDebug, Encode, Decode, TypeInfo)]
 pub enum AssetIds {
 	Erc20(EvmAddress),
-	Token(TokenSymbol),
+	NativeAssetId(CurrencyId),
+	ForeignAssetId(ForeignAssetId),
+}
+
+#[derive(Clone, Eq, PartialEq, RuntimeDebug, Encode, Decode, TypeInfo)]
+pub struct AssetMetadata<Balance> {
+	pub name: Vec<u8>,
+	pub symbol: Vec<u8>,
+	pub decimals: u8,
+	pub minimal_balance: Balance,
 }
