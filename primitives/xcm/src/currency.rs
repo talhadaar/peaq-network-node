@@ -16,17 +16,17 @@
 
 #![allow(clippy::from_over_into)]
 
-use crate::{evm::EvmAddress, *};
+use crate::evm::EvmAddress;
 use bstringify::bstringify;
 use codec::{Decode, Encode, MaxEncodedLen};
 use scale_info::TypeInfo;
-use sp_core::H160;
+
+use num_enum::{IntoPrimitive, TryFromPrimitive};
 use sp_runtime::RuntimeDebug;
 use sp_std::{
-	convert::{Into, TryFrom, From},
+	convert::{From, Into, TryFrom},
 	prelude::*,
 };
-use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 #[cfg(feature = "std")]
 use serde::{Deserialize, Serialize};
@@ -201,7 +201,18 @@ impl CurrencyId {
 
 /// H160 CurrencyId Type enum
 #[derive(
-	Encode, Decode, Eq, PartialEq, Copy, Clone, RuntimeDebug, PartialOrd, Ord, TryFromPrimitive, IntoPrimitive, TypeInfo,
+	Encode,
+	Decode,
+	Eq,
+	PartialEq,
+	Copy,
+	Clone,
+	RuntimeDebug,
+	PartialOrd,
+	Ord,
+	TryFromPrimitive,
+	IntoPrimitive,
+	TypeInfo,
 )]
 #[repr(u8)]
 pub enum CurrencyIdType {

@@ -1,10 +1,8 @@
-use sp_core::H160;
-use hex_literal::hex;
 use core::ops::Range;
+use hex_literal::hex;
+use sp_core::H160;
 
-use crate::{
-	currency::{CurrencyId, CurrencyIdType},
-};
+use crate::currency::{CurrencyId, CurrencyIdType};
 
 /// Evm Address.
 pub type EvmAddress = H160;
@@ -14,14 +12,17 @@ pub type EvmAddress = H160;
 /// Peaq precompiles
 /// 0x0000000000000000000000000000000000000400 - 0x0000000000000000000000000000000000000800
 /// Each precompile will be installed into the runtime beginning with this address prefix
-pub const PRECOMPILE_ADDRESS_START: EvmAddress = H160(hex!("0000000000000000000000000000000000000400"));
+pub const PRECOMPILE_ADDRESS_START: EvmAddress =
+	H160(hex!("0000000000000000000000000000000000000400"));
 /// Predeployed system contracts (except Mirrored ERC20)
 /// 0x0000000000000000000000000000000000000800 - 0x0000000000000000000000000000000000001000
-pub const PREDEPLOY_ADDRESS_START: EvmAddress = H160(hex!("0000000000000000000000000000000000000800"));
-// pub const MIRRORED_TOKENS_ADDRESS_START: EvmAddress = H160(hex!("0000000000000000000100000000000000000000"));
-// pub const MIRRORED_NFT_ADDRESS_START: u64 = 0x2000000;
-// /// ERC20 Holding Account used for transfer ERC20 token
-// pub const ERC20_HOLDING_ACCOUNT: EvmAddress = H160(hex_literal::hex!("000000000000000000ff00000000000000000000"));
+pub const PREDEPLOY_ADDRESS_START: EvmAddress =
+	H160(hex!("0000000000000000000000000000000000000800"));
+// pub const MIRRORED_TOKENS_ADDRESS_START: EvmAddress =
+// H160(hex!("0000000000000000000100000000000000000000")); pub const MIRRORED_NFT_ADDRESS_START: u64
+// = 0x2000000; /// ERC20 Holding Account used for transfer ERC20 token
+// pub const ERC20_HOLDING_ACCOUNT: EvmAddress =
+// H160(hex_literal::hex!("000000000000000000ff00000000000000000000"));
 /// System contract address prefix
 pub const SYSTEM_CONTRACT_ADDRESS_PREFIX: [u8; 9] = [0u8; 9];
 
@@ -42,20 +43,21 @@ impl TryFrom<CurrencyId> for EvmAddress {
 	type Error = ();
 
 	fn try_from(val: CurrencyId) -> Result<Self, Self::Error> {
-        let mut address = [0u8; 20];
+		let mut address = [0u8; 20];
 		match val {
 			CurrencyId::Token(token) => {
 				address[H160_POSITION_CURRENCY_ID_TYPE] = CurrencyIdType::Token.into();
 				address[H160_POSITION_TOKEN] = token.into();
-            }
+			},
 			CurrencyId::Erc20(erc20) => {
 				address[..].copy_from_slice(erc20.as_bytes());
-			}
-            CurrencyId::ForeignAsset(foreign_asset_id) => {
+			},
+			CurrencyId::ForeignAsset(foreign_asset_id) => {
 				address[H160_POSITION_CURRENCY_ID_TYPE] = CurrencyIdType::ForeignAsset.into();
-				address[H160_POSITION_FOREIGN_ASSET].copy_from_slice(&foreign_asset_id.to_be_bytes());
-			}
+				address[H160_POSITION_FOREIGN_ASSET]
+					.copy_from_slice(&foreign_asset_id.to_be_bytes());
+			},
 		};
-        Ok(EvmAddress::from_slice(&address))
+		Ok(EvmAddress::from_slice(&address))
 	}
 }
