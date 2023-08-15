@@ -199,21 +199,6 @@ impl CurrencyId {
 	}
 }
 
-/// Generate the EvmAddress from CurrencyId so that evm contracts can call the erc20 contract.
-impl TryFrom<CurrencyId> for EvmAddress {
-	type Error = ();
-
-	fn try_from(val: CurrencyId) -> Result<Self, Self::Error> {
-		match val {
-			CurrencyId::Token(_) => Ok(EvmAddress::from_low_u64_be(
-				MIRRORED_TOKENS_ADDRESS_START | u64::from(val.currency_id().unwrap()),
-			)),
-			CurrencyId::Erc20(address) => Ok(address),
-			_ => Err(()),
-		}
-	}
-}
-
 /// H160 CurrencyId Type enum
 #[derive(
 	Encode, Decode, Eq, PartialEq, Copy, Clone, RuntimeDebug, PartialOrd, Ord, TryFromPrimitive, IntoPrimitive, TypeInfo,

@@ -8216,6 +8216,7 @@ dependencies = [
  "bstringify",
  "evm",
  "frame-support",
+ "hex-literal",
  "num_enum",
  "parity-scale-codec",
  "scale-info",

@@ -39,10 +39,7 @@ use peaq_primitives_xcm::{
 		AssetIds,TokenInfo, AssetMetadata, CurrencyIdType, ForeignAssetId, Erc20Id
 	},
 	evm::{
-		EvmAddress,
-        // is_system_contract, H160_POSITION_CURRENCY_ID_TYPE, H160_POSITION_DEXSHARE_LEFT_FIELD,
-		// H160_POSITION_DEXSHARE_LEFT_TYPE, H160_POSITION_DEXSHARE_RIGHT_FIELD, H160_POSITION_DEXSHARE_RIGHT_TYPE,
-		// H160_POSITION_FOREIGN_ASSET, H160_POSITION_LIQUID_CROADLOAN, H160_POSITION_STABLE_ASSET, H160_POSITION_TOKEN,
+		EvmAddress, is_system_contract, H160_POSITION_CURRENCY_ID_TYPE, H160_POSITION_FOREIGN_ASSET, H160_POSITION_TOKEN,
 	},
 	CurrencyId,
 };
@@ -535,82 +532,83 @@ fn key_to_currency(location: MultiLocation) -> Option<CurrencyId> {
 // 	}
 // }
 
-// pub struct EvmErc20InfoMapping<T>(sp_std::marker::PhantomData<T>);
+pub struct EvmErc20InfoMapping<T>(sp_std::marker::PhantomData<T>);
 
-// impl<T: Config> Erc20InfoMapping for EvmErc20InfoMapping<T> {
-// 	// Returns the name associated with a given CurrencyId.
-// 	// the EvmAddress must have been mapped.
-// 	fn name(currency_id: CurrencyId) -> Option<Vec<u8>> {
-// 		let name = match currency_id {
-// 			CurrencyId::Token(_) => AssetMetadatas::<T>::get(AssetIds::NativeAssetId(currency_id)).map(|v| v.name),
-// 			CurrencyId::Erc20(address) => AssetMetadatas::<T>::get(AssetIds::Erc20(address)).map(|v| v.name),
-// 			CurrencyId::ForeignAsset(foreign_asset_id) => {
-// 				AssetMetadatas::<T>::get(AssetIds::ForeignAssetId(foreign_asset_id)).map(|v| v.name)
-// 			}
-// 		}?;
+impl<T: Config> Erc20InfoMapping for EvmErc20InfoMapping<T> {
+	// Returns the name associated with a given CurrencyId.
+	// the EvmAddress must have been mapped.
+	fn name(currency_id: CurrencyId) -> Option<Vec<u8>> {
+		let name = match currency_id {
+			CurrencyId::Token(_) => AssetMetadatas::<T>::get(AssetIds::NativeAssetId(currency_id)).map(|v| v.name),
+			CurrencyId::Erc20(address) => AssetMetadatas::<T>::get(AssetIds::Erc20(address)).map(|v| v.name),
+			CurrencyId::ForeignAsset(foreign_asset_id) => {
+				AssetMetadatas::<T>::get(AssetIds::ForeignAssetId(foreign_asset_id)).map(|v| v.name)
+			}
+		}?;
 
-// 		// More than 32 bytes will be truncated.
-// 		if name.len() > 32 {
-// 			Some(name[..32].to_vec())
-// 		} else {
-// 			Some(name)
-// 		}
-// 	}
+		// More than 32 bytes will be truncated.
+		if name.len() > 32 {
+			Some(name[..32].to_vec())
+		} else {
+			Some(name)
+		}
+	}
 
-// 	// Returns the symbol associated with a given CurrencyId.
-// 	// the EvmAddress must have been mapped.
-// 	fn symbol(currency_id: CurrencyId) -> Option<Vec<u8>> {
-// 		let symbol = match currency_id {
-// 			CurrencyId::Token(_) => AssetMetadatas::<T>::get(AssetIds::NativeAssetId(currency_id)).map(|v| v.symbol),
-// 			CurrencyId::Erc20(address) => AssetMetadatas::<T>::get(AssetIds::Erc20(address)).map(|v| v.symbol),
-// 			CurrencyId::ForeignAsset(foreign_asset_id) => {
-// 				AssetMetadatas::<T>::get(AssetIds::ForeignAssetId(foreign_asset_id)).map(|v| v.symbol)
-// 			}
-// 		}?;
+	// Returns the symbol associated with a given CurrencyId.
+	// the EvmAddress must have been mapped.
+	fn symbol(currency_id: CurrencyId) -> Option<Vec<u8>> {
+		let symbol = match currency_id {
+			CurrencyId::Token(_) => AssetMetadatas::<T>::get(AssetIds::NativeAssetId(currency_id)).map(|v| v.symbol),
+			CurrencyId::Erc20(address) => AssetMetadatas::<T>::get(AssetIds::Erc20(address)).map(|v| v.symbol),
+			CurrencyId::ForeignAsset(foreign_asset_id) => {
+				AssetMetadatas::<T>::get(AssetIds::ForeignAssetId(foreign_asset_id)).map(|v| v.symbol)
+			}
+		}?;
 
-// 		// More than 32 bytes will be truncated.
-// 		if symbol.len() > 32 {
-// 			Some(symbol[..32].to_vec())
-// 		} else {
-// 			Some(symbol)
-// 		}
-// 	}
+		// More than 32 bytes will be truncated.
+		if symbol.len() > 32 {
+			Some(symbol[..32].to_vec())
+		} else {
+			Some(symbol)
+		}
+	}
 
-// 	// Returns the decimals associated with a given CurrencyId.
-// 	// the EvmAddress must have been mapped.
-// 	fn decimals(currency_id: CurrencyId) -> Option<u8> {
-// 		match currency_id {
-// 			CurrencyId::Token(_) => AssetMetadatas::<T>::get(AssetIds::NativeAssetId(currency_id)).map(|v| v.decimals),
-// 			CurrencyId::Erc20(address) => AssetMetadatas::<T>::get(AssetIds::Erc20(address)).map(|v| v.decimals),
-// 			CurrencyId::ForeignAsset(foreign_asset_id) => {
-// 				AssetMetadatas::<T>::get(AssetIds::ForeignAssetId(foreign_asset_id)).map(|v| v.decimals)
-// 			}
-// 		}
-// 	}
+	// Returns the decimals associated with a given CurrencyId.
+	// the EvmAddress must have been mapped.
+	fn decimals(currency_id: CurrencyId) -> Option<u8> {
+		match currency_id {
+			CurrencyId::Token(_) => AssetMetadatas::<T>::get(AssetIds::NativeAssetId(currency_id)).map(|v| v.decimals),
+			CurrencyId::Erc20(address) => AssetMetadatas::<T>::get(AssetIds::Erc20(address)).map(|v| v.decimals),
+			CurrencyId::ForeignAsset(foreign_asset_id) => {
+				AssetMetadatas::<T>::get(AssetIds::ForeignAssetId(foreign_asset_id)).map(|v| v.decimals)
+			}
+		}
+	}
 
-// 	// Encode the CurrencyId to EvmAddress.
-// 	// will use the u32 to get the DexShare::Erc20 from the mapping.
-// 	fn encode_evm_address(v: CurrencyId) -> Option<EvmAddress> {
-// 		EvmAddress::try_from(v).ok()
-// 	}
+	// Encode the CurrencyId to EvmAddress.
+	// will use the u32 to get the DexShare::Erc20 from the mapping.
+	fn encode_evm_address(v: CurrencyId) -> Option<EvmAddress> {
+		EvmAddress::try_from(v).ok()
+	}
 
-// 	// Decode the CurrencyId from EvmAddress.
-// 	// will use the u32 to get the DexShare::Erc20 from the mapping.
-// 	fn decode_evm_address(addr: EvmAddress) -> Option<CurrencyId> {
-// 		if !is_system_contract(addr) {
-// 			return Some(CurrencyId::Erc20(addr));
-// 		}
+	// Decode the CurrencyId from EvmAddress.
+	// will use the u32 to get the DexShare::Erc20 from the mapping.
+	fn decode_evm_address(addr: EvmAddress) -> Option<CurrencyId> {
+		// TODO How is it deployed? system contract vs precompile?
+		// if !is_system_contract(addr) {
+		// 	return Some(CurrencyId::Erc20(addr));
+		// }
 
-// 		let address = addr.as_bytes();
-// 		let currency_id = match CurrencyIdType::try_from(address[H160_POSITION_CURRENCY_ID_TYPE]).ok()? {
-// 			CurrencyIdType::Token => address[H160_POSITION_TOKEN].try_into().map(CurrencyId::Token).ok(),
-// 			CurrencyIdType::ForeignAsset => {
-// 				let id = ForeignAssetId::from_be_bytes(address[H160_POSITION_FOREIGN_ASSET].try_into().ok()?);
-// 				Some(CurrencyId::ForeignAsset(id))
-// 			}
-// 		};
+		let address = addr.as_bytes();
+		let currency_id = match CurrencyIdType::try_from(address[H160_POSITION_CURRENCY_ID_TYPE]).ok()? {
+			CurrencyIdType::Token => address[H160_POSITION_TOKEN].try_into().map(CurrencyId::Token).ok(),
+			CurrencyIdType::ForeignAsset => {
+				let id = ForeignAssetId::from_be_bytes(address[H160_POSITION_FOREIGN_ASSET].try_into().ok()?);
+				Some(CurrencyId::ForeignAsset(id))
+			}
+		};
 
-// 		// Make sure that every bit of the address is the same
-// 		Self::encode_evm_address(currency_id?).and_then(|encoded| if encoded == addr { currency_id } else { None })
-// 	}
-// }
+		// Make sure that every bit of the address is the same
+		Self::encode_evm_address(currency_id?).and_then(|encoded| if encoded == addr { currency_id } else { None })
+	}
+}
