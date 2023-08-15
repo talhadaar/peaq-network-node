@@ -31,20 +31,23 @@ use frame_support::{
 	transactional,
 };
 use frame_system::pallet_prelude::*;
-use pallet_support::{AssetIdMapping, EVMBridge, Erc20InfoMapping, InvokeContext,
-    //  Ratio, BuyWeightRate
-    };
+use pallet_support::{
+	AssetIdMapping,
+	EVMBridge,
+	Erc20InfoMapping,
+	InvokeContext,
+	//  Ratio, BuyWeightRate
+};
 use peaq_primitives_xcm::{
-	currency::{
-		AssetIds,TokenInfo, AssetMetadata, CurrencyIdType, ForeignAssetId, Erc20Id
-	},
+	currency::{AssetIds, AssetMetadata, CurrencyIdType, Erc20Id, ForeignAssetId, TokenInfo},
 	evm::{
-		EvmAddress, is_system_contract, H160_POSITION_CURRENCY_ID_TYPE, H160_POSITION_FOREIGN_ASSET, H160_POSITION_TOKEN,
+		EvmAddress, H160_POSITION_CURRENCY_ID_TYPE, H160_POSITION_FOREIGN_ASSET,
+		H160_POSITION_TOKEN,
 	},
 	CurrencyId,
 };
 
-use sp_runtime::{traits::One, ArithmeticError, FixedPointNumber, FixedU128};
+use sp_runtime::{traits::One, ArithmeticError};
 use sp_std::{boxed::Box, vec::Vec};
 
 use xcm::{v3::prelude::*, VersionedMultiLocation};
@@ -54,7 +57,8 @@ pub use module::*;
 pub use weights::WeightInfo;
 
 /// Type alias for currency balance.
-pub type BalanceOf<T> = <<T as Config>::Currency as Currency<<T as frame_system::Config>::AccountId>>::Balance;
+pub type BalanceOf<T> =
+	<<T as Config>::Currency as Currency<<T as frame_system::Config>::AccountId>>::Balance;
 
 #[frame_support::pallet]
 pub mod module {
@@ -111,15 +115,9 @@ pub mod module {
 			metadata: AssetMetadata<BalanceOf<T>>,
 		},
 		/// The asset registered.
-		AssetRegistered {
-			asset_id: AssetIds,
-			metadata: AssetMetadata<BalanceOf<T>>,
-		},
+		AssetRegistered { asset_id: AssetIds, metadata: AssetMetadata<BalanceOf<T>> },
 		/// The asset updated.
-		AssetUpdated {
-			asset_id: AssetIds,
-			metadata: AssetMetadata<BalanceOf<T>>,
-		},
+		AssetUpdated { asset_id: AssetIds, metadata: AssetMetadata<BalanceOf<T>> },
 	}
 
 	/// Next available Foreign AssetId ID.
@@ -134,21 +132,24 @@ pub mod module {
 	/// ForeignAssetLocations: map ForeignAssetId => Option<MultiLocation>
 	#[pallet::storage]
 	#[pallet::getter(fn foreign_asset_locations)]
-	pub type ForeignAssetLocations<T: Config> = StorageMap<_, Twox64Concat, ForeignAssetId, MultiLocation, OptionQuery>;
+	pub type ForeignAssetLocations<T: Config> =
+		StorageMap<_, Twox64Concat, ForeignAssetId, MultiLocation, OptionQuery>;
 
 	/// The storages for CurrencyIds.
 	///
 	/// LocationToCurrencyIds: map MultiLocation => Option<CurrencyId>
 	#[pallet::storage]
 	#[pallet::getter(fn location_to_currency_ids)]
-	pub type LocationToCurrencyIds<T: Config> = StorageMap<_, Twox64Concat, MultiLocation, CurrencyId, OptionQuery>;
+	pub type LocationToCurrencyIds<T: Config> =
+		StorageMap<_, Twox64Concat, MultiLocation, CurrencyId, OptionQuery>;
 
 	/// The storages for EvmAddress.
 	///
 	/// Erc20IdToAddress: map Erc20Id => Option<EvmAddress>
 	#[pallet::storage]
 	#[pallet::getter(fn erc20_id_to_address)]
-	pub type Erc20IdToAddress<T: Config> = StorageMap<_, Twox64Concat, Erc20Id, EvmAddress, OptionQuery>;
+	pub type Erc20IdToAddress<T: Config> =
+		StorageMap<_, Twox64Concat, Erc20Id, EvmAddress, OptionQuery>;
 
 	/// The storages for AssetMetadatas.
 	///
@@ -170,9 +171,7 @@ pub mod module {
 	#[cfg(feature = "std")]
 	impl<T: Config> Default for GenesisConfig<T> {
 		fn default() -> Self {
-			GenesisConfig {
-				assets: Default::default(),
-			}
+			GenesisConfig { assets: Default::default() }
 		}
 	}
 
@@ -205,7 +204,8 @@ pub mod module {
 		) -> DispatchResult {
 			T::RegisterOrigin::ensure_origin(origin)?;
 
-			let location: MultiLocation = (*location).try_into().map_err(|()| Error::<T>::BadLocation)?;
+			let location: MultiLocation =
+				(*location).try_into().map_err(|()| Error::<T>::BadLocation)?;
 			let foreign_asset_id = Self::do_register_foreign_asset(&location, &metadata)?;
 
 			Self::deposit_event(Event::<T>::ForeignAssetRegistered {
@@ -227,7 +227,8 @@ pub mod module {
 		) -> DispatchResult {
 			T::RegisterOrigin::ensure_origin(origin)?;
 
-			let location: MultiLocation = (*location).try_into().map_err(|()| Error::<T>::BadLocation)?;
+			let location: MultiLocation =
+				(*location).try_into().map_err(|()| Error::<T>::BadLocation)?;
 			Self::do_update_foreign_asset(foreign_asset_id, &location, &metadata)?;
 
 			Self::deposit_event(Event::<T>::ForeignAssetUpdated {
@@ -317,7 +318,6 @@ pub mod module {
 }
 
 impl<T: Config> Pallet<T> {
-
 	fn get_next_foreign_asset_id() -> Result<ForeignAssetId, DispatchError> {
 		NextForeignAssetId::<T>::try_mutate(|current| -> Result<ForeignAssetId, DispatchError> {
 			let id = *current;
@@ -335,20 +335,23 @@ impl<T: Config> Pallet<T> {
 			ensure!(maybe_currency_ids.is_none(), Error::<T>::MultiLocationExisted);
 			*maybe_currency_ids = Some(CurrencyId::ForeignAsset(foreign_asset_id));
 
-			ForeignAssetLocations::<T>::try_mutate(foreign_asset_id, |maybe_location| -> DispatchResult {
-				ensure!(maybe_location.is_none(), Error::<T>::MultiLocationExisted);
-				*maybe_location = Some(*location);
+			ForeignAssetLocations::<T>::try_mutate(
+				foreign_asset_id,
+				|maybe_location| -> DispatchResult {
+					ensure!(maybe_location.is_none(), Error::<T>::MultiLocationExisted);
+					*maybe_location = Some(*location);
 
-				AssetMetadatas::<T>::try_mutate(
-					AssetIds::ForeignAssetId(foreign_asset_id),
-					|maybe_asset_metadatas| -> DispatchResult {
-						ensure!(maybe_asset_metadatas.is_none(), Error::<T>::AssetIdExisted);
+					AssetMetadatas::<T>::try_mutate(
+						AssetIds::ForeignAssetId(foreign_asset_id),
+						|maybe_asset_metadatas| -> DispatchResult {
+							ensure!(maybe_asset_metadatas.is_none(), Error::<T>::AssetIdExisted);
 
-						*maybe_asset_metadatas = Some(metadata.clone());
-						Ok(())
-					},
-				)
-			})
+							*maybe_asset_metadatas = Some(metadata.clone());
+							Ok(())
+						},
+					)
+				},
+			)
 		})?;
 
 		Ok(foreign_asset_id)
@@ -359,40 +362,48 @@ impl<T: Config> Pallet<T> {
 		location: &MultiLocation,
 		metadata: &AssetMetadata<BalanceOf<T>>,
 	) -> DispatchResult {
-		ForeignAssetLocations::<T>::try_mutate(foreign_asset_id, |maybe_multi_locations| -> DispatchResult {
-			let old_multi_locations = maybe_multi_locations.as_mut().ok_or(Error::<T>::AssetIdNotExists)?;
+		ForeignAssetLocations::<T>::try_mutate(
+			foreign_asset_id,
+			|maybe_multi_locations| -> DispatchResult {
+				let old_multi_locations =
+					maybe_multi_locations.as_mut().ok_or(Error::<T>::AssetIdNotExists)?;
 
-			AssetMetadatas::<T>::try_mutate(
-				AssetIds::ForeignAssetId(foreign_asset_id),
-				|maybe_asset_metadatas| -> DispatchResult {
-					ensure!(maybe_asset_metadatas.is_some(), Error::<T>::AssetIdNotExists);
+				AssetMetadatas::<T>::try_mutate(
+					AssetIds::ForeignAssetId(foreign_asset_id),
+					|maybe_asset_metadatas| -> DispatchResult {
+						ensure!(maybe_asset_metadatas.is_some(), Error::<T>::AssetIdNotExists);
 
-					// modify location
-					if location != old_multi_locations {
-						LocationToCurrencyIds::<T>::remove(*old_multi_locations);
-						LocationToCurrencyIds::<T>::try_mutate(location, |maybe_currency_ids| -> DispatchResult {
-							ensure!(maybe_currency_ids.is_none(), Error::<T>::MultiLocationExisted);
-							*maybe_currency_ids = Some(CurrencyId::ForeignAsset(foreign_asset_id));
-							Ok(())
-						})?;
-					}
-					*maybe_asset_metadatas = Some(metadata.clone());
-					*old_multi_locations = *location;
-					Ok(())
-				},
-			)
-		})
+						// modify location
+						if location != old_multi_locations {
+							LocationToCurrencyIds::<T>::remove(*old_multi_locations);
+							LocationToCurrencyIds::<T>::try_mutate(
+								location,
+								|maybe_currency_ids| -> DispatchResult {
+									ensure!(
+										maybe_currency_ids.is_none(),
+										Error::<T>::MultiLocationExisted
+									);
+									*maybe_currency_ids =
+										Some(CurrencyId::ForeignAsset(foreign_asset_id));
+									Ok(())
+								},
+							)?;
+						}
+						*maybe_asset_metadatas = Some(metadata.clone());
+						*old_multi_locations = *location;
+						Ok(())
+					},
+				)
+			},
+		)
 	}
 
 	fn do_register_erc20_asset(
 		contract: EvmAddress,
 		minimal_balance: BalanceOf<T>,
 	) -> Result<AssetMetadata<BalanceOf<T>>, DispatchError> {
-		let invoke_context = InvokeContext {
-			contract,
-			sender: Default::default(),
-			origin: Default::default(),
-		};
+		let invoke_context =
+			InvokeContext { contract, sender: Default::default(), origin: Default::default() };
 
 		let metadata = AssetMetadata {
 			name: T::EVMBridge::name(invoke_context)?,
@@ -405,33 +416,45 @@ impl<T: Config> Pallet<T> {
 		// let erc20_id = Into::<Erc20Id>::into(DexShare::Erc20(contract));
 		let erc20_id: u32 = 0;
 
-		AssetMetadatas::<T>::try_mutate(AssetIds::Erc20(contract), |maybe_asset_metadatas| -> DispatchResult {
-			ensure!(maybe_asset_metadatas.is_none(), Error::<T>::AssetIdExisted);
+		AssetMetadatas::<T>::try_mutate(
+			AssetIds::Erc20(contract),
+			|maybe_asset_metadatas| -> DispatchResult {
+				ensure!(maybe_asset_metadatas.is_none(), Error::<T>::AssetIdExisted);
 
-			Erc20IdToAddress::<T>::try_mutate(erc20_id, |maybe_address| -> DispatchResult {
-				ensure!(maybe_address.is_none(), Error::<T>::AssetIdExisted);
-				*maybe_address = Some(contract);
+				Erc20IdToAddress::<T>::try_mutate(erc20_id, |maybe_address| -> DispatchResult {
+					ensure!(maybe_address.is_none(), Error::<T>::AssetIdExisted);
+					*maybe_address = Some(contract);
 
+					Ok(())
+				})?;
+
+				*maybe_asset_metadatas = Some(metadata.clone());
 				Ok(())
-			})?;
-
-			*maybe_asset_metadatas = Some(metadata.clone());
-			Ok(())
-		})?;
+			},
+		)?;
 
 		Ok(metadata)
 	}
 
-	fn do_update_erc20_asset(contract: EvmAddress, metadata: &AssetMetadata<BalanceOf<T>>) -> DispatchResult {
-		AssetMetadatas::<T>::try_mutate(AssetIds::Erc20(contract), |maybe_asset_metadatas| -> DispatchResult {
-			ensure!(maybe_asset_metadatas.is_some(), Error::<T>::AssetIdNotExists);
+	fn do_update_erc20_asset(
+		contract: EvmAddress,
+		metadata: &AssetMetadata<BalanceOf<T>>,
+	) -> DispatchResult {
+		AssetMetadatas::<T>::try_mutate(
+			AssetIds::Erc20(contract),
+			|maybe_asset_metadatas| -> DispatchResult {
+				ensure!(maybe_asset_metadatas.is_some(), Error::<T>::AssetIdNotExists);
 
-			*maybe_asset_metadatas = Some(metadata.clone());
-			Ok(())
-		})
+				*maybe_asset_metadatas = Some(metadata.clone());
+				Ok(())
+			},
+		)
 	}
 
-	fn do_register_native_asset(asset: CurrencyId, metadata: &AssetMetadata<BalanceOf<T>>) -> DispatchResult {
+	fn do_register_native_asset(
+		asset: CurrencyId,
+		metadata: &AssetMetadata<BalanceOf<T>>,
+	) -> DispatchResult {
 		AssetMetadatas::<T>::try_mutate(
 			AssetIds::NativeAssetId(asset),
 			|maybe_asset_metadatas| -> DispatchResult {
@@ -445,7 +468,10 @@ impl<T: Config> Pallet<T> {
 		Ok(())
 	}
 
-	fn do_update_native_asset(currency_id: CurrencyId, metadata: &AssetMetadata<BalanceOf<T>>) -> DispatchResult {
+	fn do_update_native_asset(
+		currency_id: CurrencyId,
+		metadata: &AssetMetadata<BalanceOf<T>>,
+	) -> DispatchResult {
 		AssetMetadatas::<T>::try_mutate(
 			AssetIds::NativeAssetId(currency_id),
 			|maybe_asset_metadatas| -> DispatchResult {
@@ -460,7 +486,9 @@ impl<T: Config> Pallet<T> {
 
 pub struct AssetIdMaps<T>(sp_std::marker::PhantomData<T>);
 
-impl<T: Config> AssetIdMapping<ForeignAssetId, MultiLocation, AssetMetadata<BalanceOf<T>>> for AssetIdMaps<T> {
+impl<T: Config> AssetIdMapping<ForeignAssetId, MultiLocation, AssetMetadata<BalanceOf<T>>>
+	for AssetIdMaps<T>
+{
 	fn get_asset_metadata(asset_ids: AssetIds) -> Option<AssetMetadata<BalanceOf<T>>> {
 		Pallet::<T>::asset_metadatas(asset_ids)
 	}
@@ -476,13 +504,10 @@ impl<T: Config> AssetIdMapping<ForeignAssetId, MultiLocation, AssetMetadata<Bala
 
 fn key_to_currency(location: MultiLocation) -> Option<CurrencyId> {
 	match location {
-		MultiLocation {
-			parents: 0,
-			interior: X1(Junction::GeneralKey { data, length }),
-		} => {
+		MultiLocation { parents: 0, interior: X1(Junction::GeneralKey { data, length }) } => {
 			let key = &data[..data.len().min(length as usize)];
 			CurrencyId::decode(&mut &*key).ok()
-		}
+		},
 		_ => None,
 	}
 }
@@ -495,12 +520,13 @@ fn key_to_currency(location: MultiLocation) -> Option<CurrencyId> {
 // 	BalanceOf<T>: Into<u128>,
 // {
 // 	fn calculate_rate(location: MultiLocation) -> Option<Ratio> {
-// 		if let Some(CurrencyId::ForeignAsset(foreign_asset_id)) = Pallet::<T>::location_to_currency_ids(location) {
-// 			if let Some(asset_metadata) = Pallet::<T>::asset_metadatas(AssetIds::ForeignAssetId(foreign_asset_id)) {
-// 				let minimum_balance = asset_metadata.minimal_balance.into();
-// 				let rate = FixedU128::saturating_from_rational(minimum_balance, T::Currency::minimum_balance().into());
-// 				log::debug!(target: "asset-registry::weight", "ForeignAsset: {}, MinimumBalance: {}, rate:{:?}", foreign_asset_id, minimum_balance, rate);
-// 				return Some(rate);
+// 		if let Some(CurrencyId::ForeignAsset(foreign_asset_id)) =
+// Pallet::<T>::location_to_currency_ids(location) { 			if let Some(asset_metadata) =
+// Pallet::<T>::asset_metadatas(AssetIds::ForeignAssetId(foreign_asset_id)) { 				let minimum_balance =
+// asset_metadata.minimal_balance.into(); 				let rate =
+// FixedU128::saturating_from_rational(minimum_balance, T::Currency::minimum_balance().into());
+// 				log::debug!(target: "asset-registry::weight", "ForeignAsset: {}, MinimumBalance: {}, rate:{:?}",
+// foreign_asset_id, minimum_balance, rate); 				return Some(rate);
 // 			}
 // 		}
 // 		None
@@ -521,8 +547,8 @@ fn key_to_currency(location: MultiLocation) -> Option<CurrencyId> {
 // 					let minimum_balance = asset_metadata.minimal_balance.into();
 // 					let rate =
 // 						FixedU128::saturating_from_rational(minimum_balance, T::Currency::minimum_balance().into());
-// 					log::debug!(target: "asset-registry::weight", "Erc20: {}, MinimumBalance: {}, rate:{:?}", address, minimum_balance, rate);
-// 					Some(rate)
+// 					log::debug!(target: "asset-registry::weight", "Erc20: {}, MinimumBalance: {}, rate:{:?}",
+// address, minimum_balance, rate); 					Some(rate)
 // 				} else {
 // 					None
 // 				}
@@ -539,11 +565,12 @@ impl<T: Config> Erc20InfoMapping for EvmErc20InfoMapping<T> {
 	// the EvmAddress must have been mapped.
 	fn name(currency_id: CurrencyId) -> Option<Vec<u8>> {
 		let name = match currency_id {
-			CurrencyId::Token(_) => AssetMetadatas::<T>::get(AssetIds::NativeAssetId(currency_id)).map(|v| v.name),
-			CurrencyId::Erc20(address) => AssetMetadatas::<T>::get(AssetIds::Erc20(address)).map(|v| v.name),
-			CurrencyId::ForeignAsset(foreign_asset_id) => {
-				AssetMetadatas::<T>::get(AssetIds::ForeignAssetId(foreign_asset_id)).map(|v| v.name)
-			}
+			CurrencyId::Token(_) =>
+				AssetMetadatas::<T>::get(AssetIds::NativeAssetId(currency_id)).map(|v| v.name),
+			CurrencyId::Erc20(address) =>
+				AssetMetadatas::<T>::get(AssetIds::Erc20(address)).map(|v| v.name),
+			CurrencyId::ForeignAsset(foreign_asset_id) =>
+				AssetMetadatas::<T>::get(AssetIds::ForeignAssetId(foreign_asset_id)).map(|v| v.name),
 		}?;
 
 		// More than 32 bytes will be truncated.
@@ -558,11 +585,13 @@ impl<T: Config> Erc20InfoMapping for EvmErc20InfoMapping<T> {
 	// the EvmAddress must have been mapped.
 	fn symbol(currency_id: CurrencyId) -> Option<Vec<u8>> {
 		let symbol = match currency_id {
-			CurrencyId::Token(_) => AssetMetadatas::<T>::get(AssetIds::NativeAssetId(currency_id)).map(|v| v.symbol),
-			CurrencyId::Erc20(address) => AssetMetadatas::<T>::get(AssetIds::Erc20(address)).map(|v| v.symbol),
-			CurrencyId::ForeignAsset(foreign_asset_id) => {
-				AssetMetadatas::<T>::get(AssetIds::ForeignAssetId(foreign_asset_id)).map(|v| v.symbol)
-			}
+			CurrencyId::Token(_) =>
+				AssetMetadatas::<T>::get(AssetIds::NativeAssetId(currency_id)).map(|v| v.symbol),
+			CurrencyId::Erc20(address) =>
+				AssetMetadatas::<T>::get(AssetIds::Erc20(address)).map(|v| v.symbol),
+			CurrencyId::ForeignAsset(foreign_asset_id) =>
+				AssetMetadatas::<T>::get(AssetIds::ForeignAssetId(foreign_asset_id))
+					.map(|v| v.symbol),
 		}?;
 
 		// More than 32 bytes will be truncated.
@@ -577,11 +606,13 @@ impl<T: Config> Erc20InfoMapping for EvmErc20InfoMapping<T> {
 	// the EvmAddress must have been mapped.
 	fn decimals(currency_id: CurrencyId) -> Option<u8> {
 		match currency_id {
-			CurrencyId::Token(_) => AssetMetadatas::<T>::get(AssetIds::NativeAssetId(currency_id)).map(|v| v.decimals),
-			CurrencyId::Erc20(address) => AssetMetadatas::<T>::get(AssetIds::Erc20(address)).map(|v| v.decimals),
-			CurrencyId::ForeignAsset(foreign_asset_id) => {
-				AssetMetadatas::<T>::get(AssetIds::ForeignAssetId(foreign_asset_id)).map(|v| v.decimals)
-			}
+			CurrencyId::Token(_) =>
+				AssetMetadatas::<T>::get(AssetIds::NativeAssetId(currency_id)).map(|v| v.decimals),
+			CurrencyId::Erc20(address) =>
+				AssetMetadatas::<T>::get(AssetIds::Erc20(address)).map(|v| v.decimals),
+			CurrencyId::ForeignAsset(foreign_asset_id) =>
+				AssetMetadatas::<T>::get(AssetIds::ForeignAssetId(foreign_asset_id))
+					.map(|v| v.decimals),
 		}
 	}
 
@@ -600,15 +631,25 @@ impl<T: Config> Erc20InfoMapping for EvmErc20InfoMapping<T> {
 		// }
 
 		let address = addr.as_bytes();
-		let currency_id = match CurrencyIdType::try_from(address[H160_POSITION_CURRENCY_ID_TYPE]).ok()? {
-			CurrencyIdType::Token => address[H160_POSITION_TOKEN].try_into().map(CurrencyId::Token).ok(),
-			CurrencyIdType::ForeignAsset => {
-				let id = ForeignAssetId::from_be_bytes(address[H160_POSITION_FOREIGN_ASSET].try_into().ok()?);
-				Some(CurrencyId::ForeignAsset(id))
-			}
-		};
+		let currency_id =
+			match CurrencyIdType::try_from(address[H160_POSITION_CURRENCY_ID_TYPE]).ok()? {
+				CurrencyIdType::Token =>
+					address[H160_POSITION_TOKEN].try_into().map(CurrencyId::Token).ok(),
+				CurrencyIdType::ForeignAsset => {
+					let id = ForeignAssetId::from_be_bytes(
+						address[H160_POSITION_FOREIGN_ASSET].try_into().ok()?,
+					);
+					Some(CurrencyId::ForeignAsset(id))
+				},
+			};
 
 		// Make sure that every bit of the address is the same
-		Self::encode_evm_address(currency_id?).and_then(|encoded| if encoded == addr { currency_id } else { None })
+		Self::encode_evm_address(currency_id?).and_then(|encoded| {
+			if encoded == addr {
+				currency_id
+			} else {
+				None
+			}
+		})
 	}
 }
