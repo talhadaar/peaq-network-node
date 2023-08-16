@@ -6615,6 +6615,31 @@ dependencies = [
 ]
 
 [[package]]
+name = "pallet-evm-bridge"
+version = "2.16.0"
+dependencies = [
+ "ethereum-types",
+ "frame-support",
+ "frame-system",
+ "hex",
+ "impl-trait-for-tuples",
+ "num_enum",
+ "pallet-balances",
+ "pallet-evm",
+ "pallet-support",
+ "pallet-timestamp",
+ "parity-scale-codec",
+ "peaq-primitives-xcm",
+ "precompile-utils-macro",
+ "scale-info",
+ "serde_json",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
 name = "pallet-evm-precompile-blake2"
 version = "2.0.0-dev"
 source = "git+https://github.com/peaqnetwork/frontier?branch=peaq-polkadot-v0.9.38#e9481a3995da9b8ec0da391d549d4a34c6068f15"
