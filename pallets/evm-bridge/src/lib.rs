@@ -27,7 +27,6 @@ use frame_support::{
 	pallet_prelude::*,
 };
 use pallet_evm::{ExitReason, ExitSucceed};
-use num_enum::{IntoPrimitive, TryFromPrimitive};
 use peaq_primitives_xcm::{evm::EvmAddress, Balance};
 use sp_core::{H160, H256, U256};
 use sp_runtime::{ArithmeticError, SaturatedConversion};
@@ -41,8 +40,7 @@ type AccountIdOf<T> = <T as frame_system::Config>::AccountId;
 type BalanceOf<T> = <<T as Config>::EVM as EVM<AccountIdOf<T>>>::Balance;
 
 #[precompile_utils_macro::generate_function_selector]
-#[derive(RuntimeDebug, Eq, PartialEq, TryFromPrimitive, IntoPrimitive)]
-#[repr(u32)]
+#[derive(RuntimeDebug, Eq, PartialEq)]
 pub enum Action {
 	Name = "name()",
 	Symbol = "symbol()",
