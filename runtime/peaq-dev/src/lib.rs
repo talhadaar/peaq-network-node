@@ -1804,3 +1804,7 @@ impl pallet_vesting::Config for Runtime {
 
 	type UnvestedFundsAllowedWithdrawReasons = UnvestedFundsAllowedWithdrawReasons;
 }
+
+// impl pallet_evm_bridge::Config for Runtime{
+// 	type EVM = EVM;
+// }

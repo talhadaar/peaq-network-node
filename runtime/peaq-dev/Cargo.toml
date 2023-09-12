@@ -115,7 +115,9 @@ pallet-evm-precompile-peaq-did = { path = "../../precompiles/peaq-did", default-
 pallet-evm-precompile-peaq-storage = { path = "../../precompiles/peaq-storage", default-features = false }
 runtime-common = { path = "../common", default-features = false }
 peaq-pallet-mor = { workspace = true, default-features = false }
-
+pallet-support = { path = "../../pallets/support", default-features = false }
+pallet-evm-bridge = { path = "../../pallets/evm-bridge", default-features = false }
+pallet-asset-registry = { path = "../../pallets/asset-registry", default-features = false }
 
 [features]
 default = ["std", "aura"]
@@ -245,6 +247,10 @@ std = [
 	"runtime-common/std",
 	"pallet-evm-precompile-peaq-did/std",
 	"pallet-evm-precompile-peaq-storage/std",
+	"pallet-support/std",
+	"pallet-evm-bridge/std",
+	"pallet-asset-registry/std",
+	
 ]
 
 # Must be enabled for tracing runtimes only
