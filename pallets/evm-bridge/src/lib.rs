@@ -33,7 +33,7 @@ use sp_runtime::{ArithmeticError, SaturatedConversion};
 use sp_std::vec::Vec;
 use pallet_support::{
 	limits::{erc20, liquidation},
-	EVMBridge as EVMBridgeTrait, ExecutionMode, InvokeContext, LiquidationEvmBridge as LiquidationEvmBridgeT, EVM,
+	EVMBridge as EVMBridgeTrait, ExecutionMode, InvokeContext, EVM,
 };
 
 type AccountIdOf<T> = <T as frame_system::Config>::AccountId;

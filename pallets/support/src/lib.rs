@@ -117,36 +117,6 @@ impl<AccountId, Balance: Default> EVMBridge<AccountId, Balance> for () {
 	}
 }
 
-/// EVM bridge for collateral liquidation.
-pub trait LiquidationEvmBridge {
-	/// Execute liquidation. Sufficient repayment is expected to be transferred to `repay_dest`,
-	/// if not received or below `min_repayment`, the liquidation would be seen as failed.
-	fn liquidate(
-		context: InvokeContext,
-		collateral: EvmAddress,
-		repay_dest: EvmAddress,
-		amount: Balance,
-		min_repayment: Balance,
-	) -> DispatchResult;
-	/// Called on sufficient repayment received and collateral transferred to liquidation contract.
-	fn on_collateral_transfer(context: InvokeContext, collateral: EvmAddress, amount: Balance);
-	/// Called on insufficient repayment received and repayment refunded to liquidation contract.
-	fn on_repayment_refund(context: InvokeContext, collateral: EvmAddress, repayment: Balance);
-}
-impl LiquidationEvmBridge for () {
-	fn liquidate(
-		_context: InvokeContext,
-		_collateral: EvmAddress,
-		_repay_dest: EvmAddress,
-		_amount: Balance,
-		_min_repayment: Balance,
-	) -> DispatchResult {
-		Err(DispatchError::Other("unimplemented evm bridge"))
-	}
-	fn on_collateral_transfer(_context: InvokeContext, _collateral: EvmAddress, _amount: Balance) {}
-	fn on_repayment_refund(_context: InvokeContext, _collateral: EvmAddress, _repayment: Balance) {}
-}
-
 /// A mapping between `AccountId` and `EvmAddress`.
 pub trait AddressMapping<AccountId> {
 	/// Returns the AccountId used go generate the given EvmAddress.
