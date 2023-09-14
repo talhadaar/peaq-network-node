@@ -25,8 +25,9 @@ use ethereum_types::BigEndianHash;
 use frame_support::{
 	dispatch::{DispatchError, DispatchResult},
 	pallet_prelude::*,
+	traits::{Currency, tokens::fungible::Inspect}
 };
-use pallet_evm::{ExitReason, ExitSucceed};
+use pallet_evm::{ExitReason, ExitSucceed, AddressMapping, BalanceOf};
 use peaq_primitives_xcm::{evm::EvmAddress, Balance};
 use sp_core::{H160, H256, U256};
 use sp_runtime::{ArithmeticError, SaturatedConversion};
@@ -37,7 +38,8 @@ use pallet_support::{
 };
 
 type AccountIdOf<T> = <T as frame_system::Config>::AccountId;
-type BalanceOf<T> = <<T as Config>::EVM as EVM<AccountIdOf<T>>>::Balance;
+// type BalanceOf<T> = <<T as Config>::EVM as Currency<AccountIdOf<T>>>::Balance;
+/// Type alias for currency balance.
 
 #[precompile_utils_macro::generate_function_selector]
 #[derive(RuntimeDebug, Eq, PartialEq)]
@@ -62,7 +64,9 @@ pub mod module {
 	/// EvmBridge module trait
 	#[pallet::config]
 	pub trait Config: frame_system::Config {
-		type EVM: EVM<AccountIdOf<Self>>;
+		type EVM: EVM;
+		type AddressMapping: AddressMapping<AccountIdOf<Self>>;
+		type Currency: Currency<Self::AccountId> + Inspect<Self::AccountId>;
 	}
 
 	#[pallet::error]
@@ -92,7 +96,7 @@ pub mod module {
 
 pub struct EVMBridge<T>(sp_std::marker::PhantomData<T>);
 
-impl<T: Config> EVMBridgeTrait<AccountIdOf<T>, BalanceOf<T>> for EVMBridge<T> {
+impl<T: Config + pallet_evm::Config> EVMBridgeTrait<AccountIdOf<T>, BalanceOf<T>> for EVMBridge<T> {
 	// Calls the name method on an ERC20 contract using the given context
 	// and returns the token name.
 	fn name(context: InvokeContext) -> Result<Vec<u8>, DispatchError> {

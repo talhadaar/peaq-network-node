@@ -1805,6 +1805,8 @@ impl pallet_vesting::Config for Runtime {
 	type UnvestedFundsAllowedWithdrawReasons = UnvestedFundsAllowedWithdrawReasons;
 }
 
-// impl pallet_evm_bridge::Config for Runtime{
-// 	type EVM = EVM;
-// }
+impl pallet_evm_bridge::Config for Runtime{
+	type EVM = EVM;
+	type AddressMapping = HashedAddressMapping<BlakeTwo256>;
+	type Currency = Balances;
+}

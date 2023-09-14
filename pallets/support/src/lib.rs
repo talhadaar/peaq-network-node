@@ -47,7 +47,7 @@ pub trait PrecompilePauseFilter {
 }
 
 /// An abstraction of EVM for EVMBridge
-pub trait EVM<AccountId> {
+pub trait EVM {
 	type Balance: AtLeast32BitUnsigned + Copy + MaybeSerializeDeserialize + Default;
 
 	fn execute(
