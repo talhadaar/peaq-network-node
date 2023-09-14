@@ -58,21 +58,6 @@ pub trait EVM<AccountId> {
 		storage_limit: u32,
 		mode: ExecutionMode,
 	) -> Result<CallInfo, sp_runtime::DispatchError>;
-
-	/// Get the real origin account and charge storage rent from the origin.
-	fn get_origin() -> Option<AccountId>;
-	/// Set the EVM origin
-	fn set_origin(origin: AccountId);
-	/// Kill the EVM origin
-	fn kill_origin();
-	/// Push new EVM origin in xcm
-	fn push_xcm_origin(origin: AccountId);
-	/// Pop EVM origin in xcm
-	fn pop_xcm_origin();
-	/// Kill the EVM origin in xcm
-	fn kill_xcm_origin();
-	/// Get the real origin account or xcm origin and charge storage rent from the origin.
-	fn get_real_or_xcm_origin() -> Option<AccountId>;
 }
 
 #[derive(Encode, Decode, Eq, PartialEq, Copy, Clone, RuntimeDebug)]
@@ -108,20 +93,6 @@ pub trait EVMBridge<AccountId, Balance> {
 	fn balance_of(context: InvokeContext, address: EvmAddress) -> Result<Balance, DispatchError>;
 	/// Execute ERC20.transfer(address, uint256) to transfer value to `to`
 	fn transfer(context: InvokeContext, to: EvmAddress, value: Balance) -> DispatchResult;
-	/// Get the real origin account and charge storage rent from the origin.
-	fn get_origin() -> Option<AccountId>;
-	/// Set the EVM origin
-	fn set_origin(origin: AccountId);
-	/// Kill the EVM origin
-	fn kill_origin();
-	/// Push new EVM origin in xcm
-	fn push_xcm_origin(origin: AccountId);
-	/// Pop EVM origin in xcm
-	fn pop_xcm_origin();
-	/// Kill the EVM origin in xcm
-	fn kill_xcm_origin();
-	/// Get the real origin account or xcm origin and charge storage rent from the origin.
-	fn get_real_or_xcm_origin() -> Option<AccountId>;
 }
 
 #[cfg(feature = "std")]
@@ -143,17 +114,6 @@ impl<AccountId, Balance: Default> EVMBridge<AccountId, Balance> for () {
 	}
 	fn transfer(_context: InvokeContext, _to: EvmAddress, _value: Balance) -> DispatchResult {
 		Err(DispatchError::Other("unimplemented evm bridge"))
-	}
-	fn get_origin() -> Option<AccountId> {
-		None
-	}
-	fn set_origin(_origin: AccountId) {}
-	fn kill_origin() {}
-	fn push_xcm_origin(_origin: AccountId) {}
-	fn pop_xcm_origin() {}
-	fn kill_xcm_origin() {}
-	fn get_real_or_xcm_origin() -> Option<AccountId> {
-		None
 	}
 }
 
@@ -185,42 +145,6 @@ impl LiquidationEvmBridge for () {
 	}
 	fn on_collateral_transfer(_context: InvokeContext, _collateral: EvmAddress, _amount: Balance) {}
 	fn on_repayment_refund(_context: InvokeContext, _collateral: EvmAddress, _repayment: Balance) {}
-}
-
-/// An abstraction of EVMManager
-pub trait EVMManager<AccountId, Balance> {
-	/// Query the constants `NewContractExtraBytes` value from evm module.
-	fn query_new_contract_extra_bytes() -> u32;
-	/// Query the constants `StorageDepositPerByte` value from evm module.
-	fn query_storage_deposit_per_byte() -> Balance;
-	/// Query the maintainer address from the ERC20 contract.
-	fn query_maintainer(contract: H160) -> Result<H160, DispatchError>;
-	/// Query the constants `DeveloperDeposit` value from evm module.
-	fn query_developer_deposit() -> Balance;
-	/// Query the constants `PublicationFee` value from evm module.
-	fn query_publication_fee() -> Balance;
-	/// Transfer the maintainer of the contract address.
-	fn transfer_maintainer(from: AccountId, contract: H160, new_maintainer: H160) -> DispatchResult;
-	/// Publish contract
-	fn publish_contract_precompile(who: AccountId, contract: H160) -> DispatchResult;
-	/// Query the developer status of an account
-	fn query_developer_status(who: AccountId) -> bool;
-	/// Enable developer mode
-	fn enable_account_contract_development(who: AccountId) -> DispatchResult;
-	/// Disable developer mode
-	fn disable_account_contract_development(who: AccountId) -> DispatchResult;
-}
-
-/// An abstraction of EVMAccountsManager
-pub trait EVMAccountsManager<AccountId> {
-	/// Returns the AccountId used to generate the given EvmAddress.
-	fn get_account_id(address: &EvmAddress) -> AccountId;
-	/// Returns the EvmAddress associated with a given AccountId or the underlying EvmAddress of the
-	/// AccountId.
-	fn get_evm_address(account_id: &AccountId) -> Option<EvmAddress>;
-	/// Claim account mapping between AccountId and a generated EvmAddress based off of the
-	/// AccountId.
-	fn claim_default_evm_address(account_id: &AccountId) -> Result<EvmAddress, DispatchError>;
 }
 
 /// A mapping between `AccountId` and `EvmAddress`.
