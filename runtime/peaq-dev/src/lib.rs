@@ -998,6 +998,7 @@ construct_runtime!(
 		DynamicFee: pallet_dynamic_fee::{Pallet, Call, Storage, Config, Inherent} = 13,
 		BaseFee: pallet_base_fee::{Pallet, Call, Storage, Config<T>, Event} = 14,
 		EVMBridge: pallet_evm_bridge::{Pallet, Call, Storage} = 15,
+		AssetRegistry: pallet_asset_registry::{Pallet, Call, Storage, Event<T>} = 16,
 
 		// // Parachain
 		Authorship: pallet_authorship::{Pallet, Storage} = 20,
@@ -1808,4 +1809,17 @@ impl pallet_vesting::Config for Runtime {
 
 impl pallet_evm_bridge::Config for Runtime{
 	type EVM = EVM;
+}
+
+parameter_types! {
+	pub const StakingCurrencyId: CurrencyId = currency::PEAQ;
+}
+
+impl pallet_asset_registry::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type Currency = Balances;
+	type StakingCurrencyId = StakingCurrencyId;
+	type EVMBridge = pallet_evm_bridge::EVMBridge<Runtime>;
+	type RegisterOrigin = EnsureRoot<Self::AccountId>;
+	type WeightInfo = ();
 }
