@@ -997,6 +997,7 @@ construct_runtime!(
 		EVM: pallet_evm::{Pallet, Config, Call, Storage, Event<T>} = 12,
 		DynamicFee: pallet_dynamic_fee::{Pallet, Call, Storage, Config, Inherent} = 13,
 		BaseFee: pallet_base_fee::{Pallet, Call, Storage, Config<T>, Event} = 14,
+		EVMBridge: pallet_evm_bridge::{Pallet, Call, Storage} = 15,
 
 		// // Parachain
 		Authorship: pallet_authorship::{Pallet, Storage} = 20,
