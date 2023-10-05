@@ -1808,6 +1808,4 @@ impl pallet_vesting::Config for Runtime {
 
 impl pallet_evm_bridge::Config for Runtime{
 	type EVM = EVM;
-	type AddressMapping = HashedAddressMapping<BlakeTwo256>;
-	type Currency = Balances;
 }

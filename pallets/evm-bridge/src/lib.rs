@@ -39,7 +39,7 @@ use pallet_support::{
 use pallet_evm::{EVM as EVMTrait, ExecutionMode, InvokeContext};
 
 type AccountIdOf<T> = <T as frame_system::Config>::AccountId;
-// type BalanceOf<T> = <<T as Config>::EVM as Currency<AccountIdOf<T>>>::Balance;
+
 /// Type alias for currency balance.
 
 #[precompile_utils_macro::generate_function_selector]
@@ -66,8 +66,6 @@ pub mod module {
 	#[pallet::config]
 	pub trait Config: frame_system::Config {
 		type EVM: EVMTrait<AccountIdOf<Self>>;
-		type AddressMapping: AddressMapping<AccountIdOf<Self>>;
-		type Currency: Currency<Self::AccountId> + Inspect<Self::AccountId>;
 	}
 
 	#[pallet::error]
