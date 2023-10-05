@@ -20,6 +20,7 @@ fp-evm = { workspace = true, default-features = false }
 
 orml-tokens = { workspace = true, default-features = false }
 peaq-primitives-xcm = { path = "../../primitives/xcm", default-features = false }
+pallet-evm = { workspace = true, default-features = false }
 
 [dev-dependencies]
 serde_json = { workspace = true }
@@ -39,4 +40,5 @@ std = [
 	"sp-std/std",
 	"xcm/std",
 	"fp-evm/std",
+	"pallet-evm/std",
 ]

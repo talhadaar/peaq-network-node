@@ -19,6 +19,7 @@ peaq-primitives-xcm = { path = "../../primitives/xcm", default-features = false 
 xcm = { workspace = true, default-features = false }
 
 pallet-support = { path = "../support", default-features = false }
+pallet-evm = { workspace = true, default-features = false }
 
 [dev-dependencies]
 serde_json = { workspace = true }
@@ -41,5 +42,6 @@ std = [
     "peaq-primitives-xcm/std",
     "xcm/std",
     "pallet-support/std",
+    "pallet-evm/std",
 ]
 try-runtime = ["frame-support/try-runtime", "frame-system/try-runtime"]

@@ -83,19 +83,19 @@ pallet-utility = { git = "https://github.com/peaqnetwork/substrate", branch = "p
 pallet-treasury = { git = "https://github.com/peaqnetwork/substrate", branch = "peaq-polkadot-v0.9.38", default-features = false }
 pallet-vesting = { git = "https://github.com/peaqnetwork/substrate", branch = "peaq-polkadot-v0.9.38", default-features = false }
 sp-io = { git = "https://github.com/peaqnetwork/substrate", branch = "peaq-polkadot-v0.9.38", default-features = false }
-fp-evm = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.38", default-features = false }
-fp-rpc = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.38", default-features = false }
-fp-self-contained = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.38", default-features = false }
-pallet-base-fee = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.38", default-features = false }
-pallet-dynamic-fee = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.38", default-features = false }
-pallet-ethereum = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.38", default-features = false }
-pallet-evm = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.38", default-features = false }
-pallet-evm-precompile-blake2 = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.38", default-features = false }
-pallet-evm-precompile-bn128 = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.38", default-features = false }
-pallet-evm-precompile-dispatch = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.38", default-features = false }
-pallet-evm-precompile-modexp = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.38", default-features = false }
-pallet-evm-precompile-sha3fips = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.38", default-features = false }
-pallet-evm-precompile-simple = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.38", default-features = false }
+fp-evm = { git = "https://github.com/peaqnetwork/frontier", branch = "feature/1201590612941071_pallet-asset-registry", default-features = false }
+fp-rpc = { git = "https://github.com/peaqnetwork/frontier", branch = "feature/1201590612941071_pallet-asset-registry", default-features = false }
+fp-self-contained = { git = "https://github.com/peaqnetwork/frontier", branch = "feature/1201590612941071_pallet-asset-registry", default-features = false }
+pallet-base-fee = { git = "https://github.com/peaqnetwork/frontier", branch = "feature/1201590612941071_pallet-asset-registry", default-features = false }
+pallet-dynamic-fee = { git = "https://github.com/peaqnetwork/frontier", branch = "feature/1201590612941071_pallet-asset-registry", default-features = false }
+pallet-ethereum = { git = "https://github.com/peaqnetwork/frontier", branch = "feature/1201590612941071_pallet-asset-registry", default-features = false }
+pallet-evm = { git = "https://github.com/peaqnetwork/frontier", branch = "feature/1201590612941071_pallet-asset-registry", default-features = false }
+pallet-evm-precompile-blake2 = { git = "https://github.com/peaqnetwork/frontier", branch = "feature/1201590612941071_pallet-asset-registry", default-features = false }
+pallet-evm-precompile-bn128 = { git = "https://github.com/peaqnetwork/frontier", branch = "feature/1201590612941071_pallet-asset-registry", default-features = false }
+pallet-evm-precompile-dispatch = { git = "https://github.com/peaqnetwork/frontier", branch = "feature/1201590612941071_pallet-asset-registry", default-features = false }
+pallet-evm-precompile-modexp = { git = "https://github.com/peaqnetwork/frontier", branch = "feature/1201590612941071_pallet-asset-registry", default-features = false }
+pallet-evm-precompile-sha3fips = { git = "https://github.com/peaqnetwork/frontier", branch = "feature/1201590612941071_pallet-asset-registry", default-features = false }
+pallet-evm-precompile-simple = { git = "https://github.com/peaqnetwork/frontier", branch = "feature/1201590612941071_pallet-asset-registry", default-features = false }
 cumulus-primitives-core = { git = "https://github.com/peaqnetwork/cumulus", branch = "peaq-polkadot-v0.9.38", default-features = false }
 cumulus-primitives-utility = { git = "https://github.com/peaqnetwork/cumulus", branch = "peaq-polkadot-v0.9.38", default-features = false }
 cumulus-primitives-timestamp = { git = "https://github.com/peaqnetwork/cumulus", branch = "peaq-polkadot-v0.9.38", default-features = false }
@@ -152,13 +152,13 @@ sp-timestamp = { git = "https://github.com/peaqnetwork/substrate", branch = "pea
 substrate-frame-rpc-system = { git = "https://github.com/peaqnetwork/substrate", branch = "peaq-polkadot-v0.9.38" }
 sc-network = { git = "https://github.com/peaqnetwork/substrate", branch = "peaq-polkadot-v0.9.38" }
 sc-network-common = { git = "https://github.com/peaqnetwork/substrate", branch = "peaq-polkadot-v0.9.38" }
-fc-consensus = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.38" }
-fc-db = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.38" }
-fc-mapping-sync = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.38" }
-fc-rpc = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.38" }
-fc-rpc-core = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.38" }
-fp-consensus = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.38" }
-fp-storage = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.38" }
+fc-consensus = { git = "https://github.com/peaqnetwork/frontier", branch = "feature/1201590612941071_pallet-asset-registry" }
+fc-db = { git = "https://github.com/peaqnetwork/frontier", branch = "feature/1201590612941071_pallet-asset-registry" }
+fc-mapping-sync = { git = "https://github.com/peaqnetwork/frontier", branch = "feature/1201590612941071_pallet-asset-registry" }
+fc-rpc = { git = "https://github.com/peaqnetwork/frontier", branch = "feature/1201590612941071_pallet-asset-registry" }
+fc-rpc-core = { git = "https://github.com/peaqnetwork/frontier", branch = "feature/1201590612941071_pallet-asset-registry" }
+fp-consensus = { git = "https://github.com/peaqnetwork/frontier", branch = "feature/1201590612941071_pallet-asset-registry" }
+fp-storage = { git = "https://github.com/peaqnetwork/frontier", branch = "feature/1201590612941071_pallet-asset-registry" }
 tokio = { version = "1.13.0" }
 sc-tracing = { git = "https://github.com/peaqnetwork/substrate", branch = "peaq-polkadot-v0.9.38" }
 cumulus-client-cli = { git = "https://github.com/peaqnetwork/cumulus", branch = "peaq-polkadot-v0.9.38" }
@@ -177,7 +177,7 @@ polkadot-service = { git = "https://github.com/peaqnetwork/polkadot", branch = "
 polkadot-cli = { git = "https://github.com/peaqnetwork/polkadot", branch = "peaq-polkadot-v0.9.38" }
 sp-keystore = { git = "https://github.com/peaqnetwork/substrate", branch = "peaq-polkadot-v0.9.38" }
 sc-chain-spec = { git = "https://github.com/peaqnetwork/substrate", branch = "peaq-polkadot-v0.9.38" }
-fp-dynamic-fee = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.38" }
+fp-dynamic-fee = { git = "https://github.com/peaqnetwork/frontier", branch = "feature/1201590612941071_pallet-asset-registry" }
 peaq-pallet-did-rpc = { git = "https://github.com/peaqnetwork/peaq-pallet-did.git", branch = "peaq-polkadot-v0.9.38" }
 peaq-pallet-rbac-rpc = { git = "https://github.com/peaqnetwork/peaq-pallet-rbac.git", branch = "peaq-polkadot-v0.9.38" }
 peaq-pallet-storage-rpc = { git = "https://github.com/peaqnetwork/peaq-storage-pallet.git", branch = "peaq-polkadot-v0.9.38", default-features = false, version = "0.0.1" }
@@ -195,7 +195,7 @@ clap = { version = "4.0.32"}
 jsonrpc-core = "18.0.0"
 url = "2.2.2"
 jsonrpsee = { version = "0.16.2" }
-fc-storage = { git = "https://github.com/peaqnetwork/frontier", branch = "peaq-polkadot-v0.9.38" }
+fc-storage = { git = "https://github.com/peaqnetwork/frontier", branch = "feature/1201590612941071_pallet-asset-registry" }
 
 case = "1.0"
 prettyplease = "0.1.18"

@@ -36,6 +36,7 @@ use sp_std::{
 	prelude::*,
 };
 
+use pallet_evm::{InvokeContext, ExecutionMode};
 /// Return true if the call of EVM precompile contract is allowed.
 pub trait PrecompileCallerFilter {
 	fn is_allowed(caller: H160) -> bool;
@@ -46,37 +47,23 @@ pub trait PrecompilePauseFilter {
 	fn is_paused(address: H160) -> bool;
 }
 
-/// An abstraction of EVM for EVMBridge
-pub trait EVM {
-	type Balance: AtLeast32BitUnsigned + Copy + MaybeSerializeDeserialize + Default;
+// #[derive(Encode, Decode, Eq, PartialEq, Copy, Clone, RuntimeDebug)]
+// pub enum ExecutionMode {
+// 	Execute,
+// 	/// Discard any state changes
+// 	View,
+// 	/// Also discard any state changes and use estimate gas mode for evm config
+// 	EstimateGas,
+// }
 
-	fn execute(
-		context: InvokeContext,
-		input: Vec<u8>,
-		value: Self::Balance,
-		gas_limit: u64,
-		storage_limit: u32,
-		mode: ExecutionMode,
-	) -> Result<CallInfo, sp_runtime::DispatchError>;
-}
-
-#[derive(Encode, Decode, Eq, PartialEq, Copy, Clone, RuntimeDebug)]
-pub enum ExecutionMode {
-	Execute,
-	/// Discard any state changes
-	View,
-	/// Also discard any state changes and use estimate gas mode for evm config
-	EstimateGas,
-}
-
-#[derive(Encode, Decode, Eq, PartialEq, Copy, Clone, RuntimeDebug)]
-pub struct InvokeContext {
-	pub contract: EvmAddress,
-	/// similar to msg.sender
-	pub sender: EvmAddress,
-	/// similar to tx.origin
-	pub origin: EvmAddress,
-}
+// #[derive(Encode, Decode, Eq, PartialEq, Copy, Clone, RuntimeDebug)]
+// pub struct InvokeContext {
+// 	pub contract: EvmAddress,
+// 	/// similar to msg.sender
+// 	pub sender: EvmAddress,
+// 	/// similar to tx.origin
+// 	pub origin: EvmAddress,
+// }
 
 /// An abstraction of EVMBridge
 pub trait EVMBridge<AccountId, Balance> {
