@@ -25,18 +25,20 @@ use ethereum_types::BigEndianHash;
 use frame_support::{
 	dispatch::{DispatchError, DispatchResult},
 	pallet_prelude::*,
-	traits::{Currency, tokens::fungible::Inspect}
+	traits::{tokens::fungible::Inspect, Currency},
 };
-use pallet_evm::{ExitReason, ExitSucceed, AddressMapping, BalanceOf};
+use pallet_evm::{
+	AddressMapping, BalanceOf, ExecutionMode, ExitReason, ExitSucceed, InvokeContext,
+	EVM as EVMTrait,
+};
+use pallet_support::{
+	limits::{erc20, liquidation},
+	EVMBridge as EVMBridgeTrait,
+};
 use peaq_primitives_xcm::{evm::EvmAddress, Balance};
 use sp_core::{H160, H256, U256};
 use sp_runtime::{ArithmeticError, SaturatedConversion};
 use sp_std::vec::Vec;
-use pallet_support::{
-	limits::{erc20, liquidation},
-	EVMBridge as EVMBridgeTrait
-};
-use pallet_evm::{EVM as EVMTrait, ExecutionMode, InvokeContext};
 
 type AccountIdOf<T> = <T as frame_system::Config>::AccountId;
 
@@ -216,13 +218,12 @@ impl<T: Config + pallet_evm::Config> EVMBridgeTrait<AccountIdOf<T>, BalanceOf<T>
 		// append receiver address
 		input.extend_from_slice(H256::from(to).as_bytes());
 		// append amount to be transferred
-		input.extend_from_slice(H256::from_uint(&U256::from(value.saturated_into::<u128>())).as_bytes());
+		input.extend_from_slice(
+			H256::from_uint(&U256::from(value.saturated_into::<u128>())).as_bytes(),
+		);
 
-		let storage_limit = if context.origin == Default::default() {
-			0
-		} else {
-			erc20::TRANSFER.storage
-		};
+		let storage_limit =
+			if context.origin == Default::default() { 0 } else { erc20::TRANSFER.storage };
 
 		let info = T::EVM::execute(
 			context,
@@ -240,10 +241,7 @@ impl<T: Config + pallet_evm::Config> EVMBridgeTrait<AccountIdOf<T>, BalanceOf<T>
 		U256::from(1).to_big_endian(&mut bytes);
 
 		// Check return value to make sure not calling on empty contracts.
-		ensure!(
-			!info.value.is_empty() && info.value == bytes,
-			Error::<T>::InvalidReturnValue
-		);
+		ensure!(!info.value.is_empty() && info.value == bytes, Error::<T>::InvalidReturnValue);
 		Ok(())
 	}
 }
@@ -266,21 +264,21 @@ impl<T: Config> Pallet<T> {
 		// the corresponding parameter or return value.
 		// - part 2: 32 byte, string length
 		// - part 3: string data
-		ensure!(
-			output.len() >= 64 && output.len() % 32 == 0,
-			Error::<T>::InvalidReturnValue
-		);
+		ensure!(output.len() >= 64 && output.len() % 32 == 0, Error::<T>::InvalidReturnValue);
 
 		let offset = U256::from_big_endian(&output[0..32]);
 		let length = U256::from_big_endian(&output[offset.as_usize()..offset.as_usize() + 32]);
 		ensure!(
-			// output is 32-byte aligned. ensure total_length >= offset + string length + string data length.
+			// output is 32-byte aligned. ensure total_length >= offset + string length + string
+			// data length.
 			output.len() >= offset.as_usize() + 32 + length.as_usize(),
 			Error::<T>::InvalidReturnValue
 		);
 
 		let mut data = Vec::new();
-		data.extend_from_slice(&output[offset.as_usize() + 32..offset.as_usize() + 32 + length.as_usize()]);
+		data.extend_from_slice(
+			&output[offset.as_usize() + 32..offset.as_usize() + 32 + length.as_usize()],
+		);
 
 		Ok(data.to_vec())
 	}

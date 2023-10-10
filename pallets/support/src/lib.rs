@@ -20,12 +20,8 @@
 #![allow(clippy::unused_unit)]
 
 use codec::{Decode, Encode};
-use peaq_primitives_xcm::currency::AssetIds;
-use peaq_primitives_xcm::{
-	evm::{EvmAddress},
-	Balance, CurrencyId,
-};
 use fp_evm::CallInfo;
+use peaq_primitives_xcm::{currency::AssetIds, evm::EvmAddress, Balance, CurrencyId};
 use sp_core::H160;
 use sp_runtime::{
 	traits::{AtLeast32BitUnsigned, MaybeSerializeDeserialize},
@@ -36,7 +32,7 @@ use sp_std::{
 	prelude::*,
 };
 
-use pallet_evm::{InvokeContext, ExecutionMode};
+use pallet_evm::{ExecutionMode, InvokeContext};
 /// Return true if the call of EVM precompile contract is allowed.
 pub trait PrecompileCallerFilter {
 	fn is_allowed(caller: H160) -> bool;
