@@ -234,3 +234,26 @@ pub struct AssetMetadata<Balance> {
 	pub decimals: u8,
 	pub minimal_balance: Balance,
 }
+
+impl From<CurrencyId> for u32 {
+	fn from(val: CurrencyId) -> u32 {
+		let mut bytes = [0u8; 4];
+		match val {
+			CurrencyId::Token(token) => {
+				bytes[3] = token.into();
+			}
+			CurrencyId::Erc20(address) => {
+				// Use first 4 non-zero bytes as u32 to the mapping between u32 and evm address.
+				// Take the first 4 non-zero bytes, if it is less than 4, add 0 to the left.
+				let is_zero = |&&d: &&u8| -> bool { d == 0 };
+				let leading_zeros = address.as_bytes().iter().take_while(is_zero).count();
+				let index = if leading_zeros > 16 { 16 } else { leading_zeros };
+				bytes[..].copy_from_slice(&address[index..index + 4][..]);
+			}
+			CurrencyId::ForeignAsset(foreign_asset_id) => {
+				bytes[2..].copy_from_slice(&foreign_asset_id.to_be_bytes());
+			}
+		}
+		u32::from_be_bytes(bytes)
+	}
+}

@@ -43,7 +43,7 @@ use peaq_primitives_xcm::{
 	currency::{AssetIds, AssetMetadata, CurrencyIdType, Erc20Id, ForeignAssetId, TokenInfo},
 	evm::{
 		EvmAddress, H160_POSITION_CURRENCY_ID_TYPE, H160_POSITION_FOREIGN_ASSET,
-		H160_POSITION_TOKEN,
+		H160_POSITION_TOKEN, is_system_contract
 	},
 	CurrencyId,
 };
@@ -413,9 +413,8 @@ impl<T: Config> Pallet<T> {
 			minimal_balance,
 		};
 
-		// TODO Convert EvmAddress to Erc20Id
-		// let erc20_id = Into::<Erc20Id>::into(DexShare::Erc20(contract));
-		let erc20_id: u32 = 0;
+		// TODO verify this conversion
+		let erc20_id: u32 = CurrencyId::Erc20(contract).into();
 
 		AssetMetadatas::<T>::try_mutate(
 			AssetIds::Erc20(contract),
@@ -580,10 +579,9 @@ impl<T: Config> Erc20InfoMapping for EvmErc20InfoMapping<T> {
 	// Decode the CurrencyId from EvmAddress.
 	// will use the u32 to get the DexShare::Erc20 from the mapping.
 	fn decode_evm_address(addr: EvmAddress) -> Option<CurrencyId> {
-		// TODO How is it deployed? system contract vs precompile?
-		// if !is_system_contract(addr) {
-		// 	return Some(CurrencyId::Erc20(addr));
-		// }
+		if !is_system_contract(addr) {
+			return Some(CurrencyId::Erc20(addr));
+		}
 
 		let address = addr.as_bytes();
 		let currency_id =
