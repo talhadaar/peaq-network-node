@@ -1,3 +1,5 @@
+use std::{collections::BTreeMap, str::FromStr};
+
 use crate::parachain::Extensions;
 use cumulus_primitives_core::ParaId;
 use peaq_dev_runtime::{
@@ -9,7 +11,7 @@ use peaq_dev_runtime::{
 use runtime_common::{Balance, CENTS, DOLLARS, MILLICENTS, TOKEN_DECIMALS};
 use sc_service::{ChainType, Properties};
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
-use sp_core::{sr25519, Pair, Public};
+use sp_core::{sr25519, Pair, Public, H160, U256};
 use sp_runtime::{
 	traits::{IdentifyAccount, Verify},
 	Perbill,
@@ -159,8 +161,45 @@ fn configure_genesis(
 		},
 		aura_ext: Default::default(),
 		evm: EVMConfig {
-			accounts: Precompiles::used_addresses()
-				.map(|addr| {
+			accounts: {
+				let mut map = BTreeMap::new();
+				// Alice account
+				map.insert(
+					H160::from_str("d43593c715fdd31c61141abd04a99fd6822c8558")
+						.expect("internal H160 is valid; qed"),
+					GenesisAccount {
+						balance: U256::max_value(),
+						code: Default::default(),
+						nonce: Default::default(),
+						storage: Default::default(),
+					},
+				);
+				// Bob account
+				map.insert(
+					H160::from_str("8eaf04151687736326c9fea17e25fc5287613693")
+						.expect("internal H160 is valid; qed"),
+					GenesisAccount {
+						balance: U256::max_value(),
+						code: Default::default(),
+						nonce: Default::default(),
+						storage: Default::default(),
+					},
+				);
+				// Additional Testing Acccount
+				// H160 Private Key: 702c9906ab56b2e8e67d536511ea92dbbd26238ef8a0b67fa52ee50757bc45d0
+				// SS58: 5DehM6sXniTWAcn8ctcQk6ZbJiUkUrk6W9iZJc8wSTWC5Cwy
+				map.insert(
+					H160::from_str("299018788ce96Ce923D3db4BeCCb0afA90cd4d5b")
+						.expect("internal H160 is valid; qed"),
+					GenesisAccount {
+						balance: U256::max_value(),
+						code: Default::default(),
+						nonce: Default::default(),
+						storage: Default::default(),
+					},
+				);
+				// Precompile accounts
+				map.extend(Precompiles::used_addresses().map(|addr| {
 					(
 						addr,
 						GenesisAccount {
@@ -170,8 +209,9 @@ fn configure_genesis(
 							code: revert_bytecode.clone(),
 						},
 					)
-				})
-				.collect(),
+				}));
+				map
+			},
 		},
 		ethereum: EthereumConfig {},
 		dynamic_fee: Default::default(),
