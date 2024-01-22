@@ -18,7 +18,7 @@ jobs:
               with:
                 depth: 1
                 branch: feature/1206033016316317_ci-with-peaq-bc-test
-                owner: peaqnetwork
+                owner: talhadaar
                 repository: peaq-bc-test
 
             - name: Install dependencies for peaq-bc-test
