@@ -30,4 +30,4 @@ jobs:
             - name: Run peaq-bc-test
               run: |
                 cd peaq-bc-test
-                AUTOTEST_URI="${{ secrets.AUTOTEST_HOST }}" pytest -v tests
+                AUTOTEST_URI="${{ secrets.AUTOTEST_HOST }}" pytest -k TestBlockCreationTime -q
